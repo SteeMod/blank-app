@@ -36,8 +36,8 @@ if st.button('Submit'):
 
         # Now we send the file to Azure AI Document Intelligence
         endpoint = "https://new2two.cognitiveservices.azure.com/"
-        apim_key = "1dc611154da945a39a3368b10fd088a7"
-        model_id = "Luke1vs37"
+        apim_key = "54b598653a314a04a52501abac2cc76e"
+        model_id = "Thessa5v6"
         post_url = endpoint + "/formrecognizer/v3.1/custom/models/%s/analyze" % model_id
         params = {"includeTextDetails": True}
 
