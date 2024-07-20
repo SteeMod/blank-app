@@ -21,6 +21,6 @@ def check_url(url):
         return f"Something went wrong: {err}"
 
 # Replace 'new2two' with your resource name and 'Thessa5v6' with your model ID
-url = "https://new1one.cognitiveservices.azure.com/formrecognizer/v3.1/custom/models/Thessa5v6/analyze"
+url = "https://new1one.cognitiveservices.azure.com/v3.1/custom/models/Thessa5v6/analyze"
 st.write(check_url(url))
 
