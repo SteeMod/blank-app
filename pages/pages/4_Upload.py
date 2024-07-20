@@ -37,7 +37,7 @@ if st.button('Submit'):
         # Now we send the file to Azure AI Document Intelligence
         endpoint = "https://new1one.cognitiveservices.azure.com/"
         apim_key = "1dc611154da945a39a3368b10fd088a7"
-        model_id = "Moud Tracker2"
+        model_id = "Luke1vs37"
         post_url = endpoint + "/formrecognizer/v3.1/custom/models/%s/analyze" % model_id
         params = {"includeTextDetails": True}
 
