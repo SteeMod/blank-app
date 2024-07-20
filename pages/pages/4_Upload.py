@@ -22,7 +22,7 @@ if st.button('Submit'):
         blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
         # Create a unique name for the blob
-        blob_name = "RawDocuments1"
+        blob_name = "RawDocuments"
 
         # Create a blob client using the local file name as the name for the blob
         blob_client = blob_service_client.get_blob_client("data1", blob_name)
