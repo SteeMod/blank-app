@@ -4,6 +4,7 @@ import requests
 import os
 import json
 import csv
+import time
 
 # Create the file uploader and specify that it should accept PDF files
 uploaded_file = st.file_uploader("Choose a PDF file", type=['pdf'])
