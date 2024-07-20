@@ -35,9 +35,9 @@ if st.button('Submit'):
         st.write('File uploaded to Azure Blob Storage')
 
         # Now we send the file to Azure AI Document Intelligence
-        endpoint = "https://new2two.cognitiveservices.azure.com"
-        apim_key = "54b598653a314a04a52501abac2cc76e"
-        model_id = "Thessa5vs6"
+        endpoint = "https://new1one.cognitiveservices.azure.com/"
+        apim_key = "1dc611154da945a39a3368b10fd088a7"
+        model_id = "Moud Tracker2"
         post_url = endpoint + "/formrecognizer/v3.1/custom/models/%s/analyze" % model_id
         params = {"includeTextDetails": True}
 
