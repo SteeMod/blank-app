@@ -16,7 +16,7 @@ if st.button('Submit'):
         bytes_data = uploaded_file.getvalue()
 
         # Azure connection string
-        connect_str = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=YourAccountKey;EndpointSuffix=core.windows.net'
+        connect_str = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
 
         # Create the BlobServiceClient object which will be used to create a container client
         blob_service_client = BlobServiceClient.from_connection_string(connect_str)
