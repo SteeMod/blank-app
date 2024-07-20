@@ -1,4 +1,7 @@
+# Import necessary libraries
 import streamlit as st
+from azure.ai.formrecognizer import FormRecognizerClient
+from azure.core.credentials import AzureKeyCredential
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import requests
 import os
@@ -35,7 +38,7 @@ if st.button('Submit'):
         endpoint = "https://new2two.cognitiveservices.azure.com"
         apim_key = "54b598653a314a04a52501abac2cc76e"
         model_id = "Thessa5vs6"
-        post_url = endpoint + "/formrecognizer/v2023-07-31/custom/models/%s/analyze" % model_id
+        post_url = endpoint + "/formrecognizer/v3.1/custom/models/%s/analyze" % model_id
         params = {"includeTextDetails": True}
 
         headers = {
