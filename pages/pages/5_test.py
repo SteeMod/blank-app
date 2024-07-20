@@ -20,8 +20,9 @@ async def main():
     downloader = block_blob_client.download_blob()
     blob_stream = downloader.readall()
 
-    poller = await client.begin_analyze_document(model_id=model_id, document=blob_stream)
-    result = await poller.result()
+    poller = client.begin_analyze_document(model_id=model_id, document=blob_stream)
+result = poller.result()
+
 
     if not result.documents:
         raise Exception("Expected at least one document in the result.")
