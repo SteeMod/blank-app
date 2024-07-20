@@ -24,7 +24,7 @@ def main():
                 'modelId': 'Thessa5vs6',
             }
             data = open('temp.pdf', 'rb').read()
-            response = requests.post('https://new2two.cognitiveservices.azure.com/', headers=headers, params=params, data=data)
+            response = requests.post('https://new2two.cognitiveservices.azure.com//formrecognizer/v2.1-preview.3/custom/models/Thessa5vs6/analyze', headers=headers, params=params, data=data)
             response.raise_for_status()
             result = response.json()
 
