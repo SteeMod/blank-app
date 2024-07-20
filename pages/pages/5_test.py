@@ -21,7 +21,7 @@ async def main():
     blob_stream = downloader.readall()
 
     poller = client.begin_analyze_document(model_id=model_id, document=blob_stream)
-result = poller.result()
+    result = poller.result()
 
 
     if not result.documents:
