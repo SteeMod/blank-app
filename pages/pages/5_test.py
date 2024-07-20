@@ -1,26 +1,17 @@
 import requests
-import streamlit as st
 
-def check_url(url):
-    try:
-        headers = {
-            # Replace 'your-key' with your Cognitive Services key
-            'Ocp-Apim-Subscription-Key': '1dc611154da945a39a3368b10fd088a7',
-            'Content-Type': 'application/json'
-        }
-        response = requests.post(url, headers=headers)
-        response.raise_for_status()
-        return "Connection successful"
-    except requests.exceptions.HTTPError as errh:
-        return f"HTTP Error: {errh}"
-    except requests.exceptions.ConnectionError as errc:
-        return f"Error Connecting: {errc}"
-    except requests.exceptions.Timeout as errt:
-        return f"Timeout Error: {errt}"
-    except requests.exceptions.RequestException as err:
-        return f"Something went wrong: {err}"
+def check_service_status(endpoint, key):
+    url = f"{endpoint}/formrecognizer/v3.1/custom/models"
+    headers = {
+        'Ocp-Apim-Subscription-Key': key
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return "Service is available"
+    else:
+        return f"Service unavailable. Status code: {response.status_code}"
 
-# Replace 'new2two' with your resource name and 'Thessa5v6' with your model ID
-url = "https://new1one.cognitiveservices.azure.com/v3.1/custom/models/Itshallwork/analyze"
-st.write(check_url(url))
-
+# Replace 'your_endpoint' and 'your_key' with your actual values
+endpoint = "your_endpoint"
+key = "your_key"
+print(check_service_status(endpoint, key))
