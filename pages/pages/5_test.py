@@ -15,5 +15,5 @@ def check_url(url):
     except requests.exceptions.RequestException as err:
         return f"Something went wrong: {err}"
 
-url = "https://new2two.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3/custom/models/Thessa5vs6/analyze?modelId=Thessa5vs6"
+url = "https://new2two.cognitiveservices.azure.com/"
 st.write(check_url(url))
