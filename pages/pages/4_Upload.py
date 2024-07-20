@@ -22,7 +22,7 @@ if st.button('Submit'):
         blob_service_client = BlobServiceClient.from_connection_string(connect_str)
 
         # Create a unique name for the blob
-        blob_name = "RawDocuments"
+        blob_name = "RawDoc1"
 
         # Create a blob client using the local file name as the name for the blob
         blob_client = blob_service_client.get_blob_client("data1", blob_name)
@@ -77,11 +77,11 @@ if st.button('Submit'):
                         writer.writeheader()
                         writer.writerow({k: v['text'] for k, v in fields.items()})
                     # Create a blob client for the CSV file
-                    csv_blob_client = blob_service_client.get_blob_client("processeddocuments", "output.csv")
+                    csv_blob_client = blob_service_client.get_blob_client("RawDocuments", "output.csv")
                     # Upload the CSV file
                     with open("output.csv", "rb") as data:
                         csv_blob_client.upload_blob(data)
-                    st.write('CSV file saved to Azure Blob Storage in the processeddocuments folder')
+                    st.write('CSV file saved to Azure Blob Storage in the Raw documents folder')
                     break
                 if status == "failed":
                     print("Analysis failed:\n%s" % json.dumps(resp_json))
