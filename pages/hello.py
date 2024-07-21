@@ -18,7 +18,7 @@ def download_from_azure_storage():
     return download_stream
 
 # Streamlit App
-st.title("Azure Storage Downloader")
+st.title("Download Form")
 
 # Download the file from Azure Storage
 pdf_file = download_from_azure_storage()
