@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit as st
 import base64
 
 def get_binary_file_downloader_html(bin_file, file_label='File'):
