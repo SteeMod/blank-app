@@ -71,5 +71,5 @@ st.download_button(
 )
 
     # If the download button is clicked, display the PDF in a PDF viewer
-    binary_data = pdf_file
-    pdf_viewer(input=binary_data, width=700)
+binary_data = pdf_file
+pdf_viewer(input=binary_data, width=700)
