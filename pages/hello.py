@@ -33,7 +33,43 @@ if st.download_button(
     data=pdf_file,
     file_name='downloaded_file.pdf',
     mime='application/pdf'
-):
+):import streamlit as st
+from azure.storage.blob import BlobServiceClient
+from streamlit_pdf_viewer import pdf_viewer
+
+# Azure Storage Account details
+azure_storage_account_name = "your_storage_account_name"
+azure_storage_account_key = "your_storage_account_key"
+container_name = "your_container_name"
+blob_name = "your_blob_name"  # name of the blob (file) in Azure Storage
+
+# Function to download file from Azure Storage
+def download_from_azure_storage():
+    blob_service_client = BlobServiceClient.from_connection_string(
+        f"DefaultEndpointsProtocol=https;AccountName={azure_storage_account_name};AccountKey={azure_storage_account_key}"
+    )
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+    download_stream = blob_client.download_blob().readall()
+    return download_stream
+
+# Streamlit App
+st.title("Azure Storage Downloader")
+
+# Download the file from Azure Storage
+pdf_file = download_from_azure_storage()
+
+# Display the PDF in a PDF viewer
+binary_data = pdf_file
+pdf_viewer(input=binary_data, width=700)
+
+# Provide a download button in Streamlit
+st.download_button(
+    'Download PDF',
+    data=pdf_file,
+    file_name='downloaded_file.pdf',
+    mime='application/pdf'
+)
+
     # If the download button is clicked, display the PDF in a PDF viewer
     binary_data = pdf_file
     pdf_viewer(input=binary_data, width=700)
