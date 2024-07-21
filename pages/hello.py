@@ -8,12 +8,6 @@ azure_storage_account_key = "GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqN
 container_name = "data1"
 blob_name = "MOUD Tracker Form.pdf"  # name of the blob (file) in Azure Storage
 
-# Azure Storage Account details
-azure_storage_account_name = "your_storage_account_name"
-azure_storage_account_key = "your_storage_account_key"
-container_name = "your_container_name"
-blob_name = "your_blob_name"  # name of the blob (file) in Azure Storage
-
 # Function to download file from Azure Storage
 def download_from_azure_storage():
     blob_service_client = BlobServiceClient.from_connection_string(
