@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+import streamlit as st
 from werkzeug.utils import secure_filename
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
@@ -6,24 +6,6 @@ from azure.storage.blob import BlobServiceClient
 import os
 from csv import DictWriter
 import asyncio
-
-app = Flask(__name__)
-
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files.get('file')
-        if file and file.filename:
-            filename = secure_filename(file.filename)
-            file_path = os.path.join('/tmp', filename)
-            file.save(file_path)
-            if os.path.exists(file_path):
-                asyncio.run(process_file(file_path, filename))
-                return 'File has been processed and saved to Blob Storage.'
-            else:
-                return 'Error: File was not saved correctly.'
-        else:
-            return 'No file provided or file is empty.'
 
 async def process_file(file_path, filename):
     endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT', "https://new2two.cognitiveservices.azure.com/")
@@ -69,5 +51,22 @@ async def process_file(file_path, filename):
     os.remove(file_path)
     os.remove(csv_filename)
 
+def main():
+    st.title('Azure AI Document Intelligence with Streamlit')
+    uploaded_file = st.file_uploader("Choose a file")
+    if uploaded_file is not None:
+        file_details = {"FileName":uploaded_file.name,"FileType":uploaded_file.type,"FileSize":uploaded_file.size}
+        st.write(file_details)
+        file_path = os.path.join('/tmp', secure_filename(uploaded_file.name))
+        with open(file_path, 'wb') as f:
+            f.write(uploaded_file.getbuffer())
+        if os.path.exists(file_path):
+            asyncio.run(process_file(file_path, uploaded_file.name))
+            st.write('File has been processed and saved to Blob Storage.')
+        else:
+            st.write('Error: File was not saved correctly.')
+    else:
+        st.write('No file provided or file is empty.')
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
