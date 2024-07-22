@@ -10,7 +10,7 @@ import threading
 # Define a function to handle the asynchronous processing
 async def process_file(blob_stream, model_id, container_client):
     endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT', "https://new2two.cognitiveservices.azure.com/")
-    credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY', "54b598653a314a04a52501abac2cc76e"))
+    credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY', "a1fb5ca25a77422590c3f85c8961de47"))
     client = DocumentAnalysisClient(endpoint, credential)
 
     poller = await client.begin_analyze_document(model_id=model_id, document=blob_stream)
