@@ -61,13 +61,13 @@ async def process_file(file_path, filename):
         writer.writerow(record)
 
     # Upload the CSV file to Azure Blob Storage
-    csv_blob_client = container_client.get_blob_client('out1.csv')
-    with open('out1.csv', 'rb') as data:
+    csv_blob_client = container_client.get_blob_client(csv_filename)
+    with open(csv_filename, 'rb') as data:
         csv_blob_client.upload_blob(data, overwrite=True)
 
     # Clean up local files
     os.remove(file_path)
-    os.remove('out1.csv')
+    os.remove(csv_filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
