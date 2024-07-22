@@ -12,8 +12,6 @@ async def process_file(blob_stream, model_id, container_client):
     endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT', "https://new2two.cognitiveservices.azure.com/")
     credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY', "54b598653a314a04a52501abac2cc76e"))
     client = DocumentAnalysisClient(endpoint, credential)
-     # Get model ID
-    model_id = os.getenv('FORM_RECOGNIZER_CUSTOM_MODEL_ID', "Thessa5vs6")
 
     poller = await client.begin_analyze_document(model_id=model_id, document=blob_stream)
     result = await poller.result()
@@ -52,7 +50,8 @@ def main():
         # Upload the PDF file to Azure Blob Storage
         blob_client.upload_blob(uploaded_file.getvalue(), overwrite=True)
 
-       
+        # Get model ID
+        model_id = os.getenv('FORM_RECOGNIZER_CUSTOM_MODEL_ID', "Thessa5vs6")
 
         # Run the async process in a thread
         def run_async(blob_stream, model_id, container_client):
