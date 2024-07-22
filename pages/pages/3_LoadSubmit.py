@@ -26,15 +26,15 @@ def upload_file():
             return 'File has been processed and saved to Blob Storage.'
 
 async def process_file(file_path, filename):
-    endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT')
-    credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY'))
+    endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT', "https://new2two.cognitiveservices.azure.com/")
+    credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY', "54b598653a314a04a52501abac2cc76e"))
     client = DocumentAnalysisClient(endpoint, credential)
 
-    model_id = os.getenv('FORM_RECOGNIZER_CUSTOM_MODEL_ID')
+    model_id = os.getenv('FORM_RECOGNIZER_CUSTOM_MODEL_ID', "Thessa5vs6")
 
     # Create BlobServiceClient
-    blob_service_client = BlobServiceClient.from_connection_string(os.getenv('AZURE_STORAGE_CONNECTION_STRING'))
-    container_client = blob_service_client.get_container_client(os.getenv('BLOB_CONTAINER_NAME'))
+    blob_service_client = BlobServiceClient.from_connection_string(os.getenv('AZURE_STORAGE_CONNECTION_STRING', "DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net"))
+    container_client = blob_service_client.get_container_client(os.getenv('BLOB_CONTAINER_NAME', "data1"))
     blob_client = container_client.get_blob_client(filename)
 
     # Upload the PDF file to Azure Blob Storage
@@ -44,7 +44,7 @@ async def process_file(file_path, filename):
     # Send PDF to Azure AI Document Intelligence
     with open(file_path, 'rb') as data:
         poller = await client.begin_analyze_document(model_id=model_id, document=data)
-        result = await poller.result()
+    result = await poller.result()
 
     if not result.documents:
         raise Exception("Expected at least one document in the result.")
