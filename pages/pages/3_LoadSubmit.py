@@ -9,7 +9,7 @@ import asyncio
 
 async def process_file(file_path, filename):
     endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT', "https://new2two.cognitiveservices.azure.com/")
-    credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY', "54b598653a314a04a52501abac2cc76e"))
+    credential = AzureKeyCredential(os.getenv('FORM_RECOGNIZER_API_KEY', "027ad9245a594c5886cf5d90abecb9d1"))
     client = DocumentAnalysisClient(endpoint, credential)
 
     model_id = os.getenv('FORM_RECOGNIZER_CUSTOM_MODEL_ID', "Thessa5vs6")
