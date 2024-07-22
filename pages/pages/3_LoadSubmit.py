@@ -12,18 +12,18 @@ app = Flask(__name__)
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
-        # Check if the post request has the file part
-        if 'file' not in request.files:
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            return redirect(request.url)
-        if file:
+        file = request.files.get('file')
+        if file and file.filename:
             filename = secure_filename(file.filename)
             file_path = os.path.join('/tmp', filename)
             file.save(file_path)
-            asyncio.run(process_file(file_path, filename))
-            return 'File has been processed and saved to Blob Storage.'
+            if os.path.exists(file_path):
+                asyncio.run(process_file(file_path, filename))
+                return 'File has been processed and saved to Blob Storage.'
+            else:
+                return 'Error: File was not saved correctly.'
+        else:
+            return 'No file provided or file is empty.'
 
 async def process_file(file_path, filename):
     endpoint = os.getenv('FORM_RECOGNIZER_ENDPOINT', "https://new2two.cognitiveservices.azure.com/")
