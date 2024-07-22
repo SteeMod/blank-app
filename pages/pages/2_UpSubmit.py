@@ -65,5 +65,4 @@ def main():
 
         st.success('File has been processed and saved to Blob Storage.')
 
-if __name__ == '__main__':
-    main()
+
