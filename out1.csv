@@ -1,40 +1,33 @@
-FirstName,LastName,Address,City,State,ZipCode,Phone,Allergy1,Allergy2,OTPName,OTPAddress,OTPphone,OTPClinician,PharmacyName,Med1Check,Med1Name,Med2Check,Med2Name,Med3Check,Med3Name,Med3Dosage,Med3Frequency,Med3Form,Med3Route,Med3Instructions,Med4Check,Med4Name,MedIntakeName,MedIntakeMonth,MedIntakeYear,Day1,Day1yes,Day1No,Day1Dosage,Day1Freq,Day1Form,Day1Route,Day2,Day2yes,Day2No,Day2Dosage,Day2Freq,Day2Form,Day2Route,Day3,Day3yes,Day3No,Day3Dosage,Day3Freq,Day3Route,Day4,Day4yes,Day4No,Day4Dosage,Day4Freq,Day4Route,Day5,Day5Yes,Day5No,Day5Dosage,Day5Freq,Day5Route,Day6,Day6Yes,Day6No,Day6Dosage,Day6Freq,Day6Route,Day7,Day7Yes,Day7Dosage,Day7Freq,Day7Form,Day7Route,Day8,Day8No,Day8Freq,Day9,Day9yes,Day9No,Day9Dosage,Day9Freq,Day9Form,Day9Route,Day10,Day10yes,Day10No,Day10Dosage,Day10Freq,Day10Form,Day10Route,Day11,Day11Yes,Day11No,Day11Dosage,Day11Freq,Day11Form,Day11Route,Day12,Day12Yes,Day12No,Day12Dosage,Day12Freq,Day13,Day13Yes,Day13No,Day13Freq,Day14,Day14Yes,Day14No,Day14Dosage,Day14Freq,Day14Form,Day14Route,Day15,Day15Yes,Day15No,Day15Dosage,Day15Freq,Day15Form,Day15Route,Day16,Day16Yes,Day16No,Day16Dosage,Day16Freq,Day16Form,Day16Route,Day17,Day17Yes,Day17No,Day17Dosage,Day17Freq,Day17Form,Day17Route,Day18,Day18Yes,Day18No,Day18Dosage,Day18Freq,Day18Form,Day18Route,Day19,Day19Yes,Day19No,Day19Dosage,Day19Freq,Day19Form,Day19Route,Day20,Day20Yes,Day20Dosage,Day20Freq,Day20Form,Day20Route,Day21,Day21Yes,Day21No,Day21Dosage,Day21Freq,Day21Form,Day21Route,Day22,Day22Yes,Day22No,Day22Dosage,Day22Freq,Day22Form,Day22Route,Day23Yes,Day23Dosage,Day23Route,Day24,Day24No,Day24Freq,Day25Yes,Day25Route,Day26,Day26Yes,Day26No,Day26Dosage,Day26Frequency,Day27,Day27Yes,Day27Dosage,Day27Freq,Day27Route,Day28,Day28Dosage,Day28Freq,Day28Route,Day29,Day29Yes,Day29No,Day29Dosage,Day29Freq,Day29Route,Day30,Day30Yes,Day30No,Day30Dosage,Day30Freq,Day31,Day31Yes,Day31No,Day31Dosage,Day31Freq,Day31Form,Day31Route,Med4Route,Med1Instruction,Day23,Day26Route,Day7No,Day12Form,Day4Form,Day25No,Day23No,Day8Dosage,Med2Frequency,Day25Dosage,Med4Frequency,Day28No,Med1Dosage,Day24Route,Med4Dosage,Med4Form,Day24Form,Day28Yes,ParticipantID,Day27No,Day13Dosage,Med2Form,Day24Yes,Day3Form,Day20No,Day8Form,Med2Instructions,Day13Route,Day23Freq,Med2Dosage,Day12Route,Med1Form,Day24Dosage,Day23Form,PharmacyPhone,Day28Form,Day29Form,Day27Form,Day26Form,Med1Route,Med2Route,Day5Form,Med1Freq,Day30Route,Day25,Day25Freq,Day13Form,Day25Form,Day30Form,Med4Instructions,Day8Route,Day8Yes,Day6Form
-RYAN,NGUYEN,123 Ave,Boston,New York,72456,+ 123 456 7890,Lactose,"2
-Glucose",Befree,7121 st,+1 7121712210,Dr. Kwane,CVS,:unselected:,Buprenorphine,:unselected:,Naltrexone,:selected:,Methadone,5ml,"|time(s)
-daily",Liquid,oral,Take once daily.,:unselected:,Other:,Methadone,July,2024,1,:selected:,:unselected:,5ml,"1
-time(s)","daily
-Liquid",oral,2,:selected:,:unselected:,5ML,"1
+FirstName,LastName,Address,City,State,ZipCode,Phone,Allergy1,OTPName,OTPAddress,OTPphone,OTPClinician,PharmacyName,PharmacyPhone,Med1Check,Med1Name,Med2Check,Med2Name,Med3Check,Med3Name,Med3Dosage,Med3Frequency,Med3Form,Med3Route,Med3Instructions,Med4Check,Med4Name,MedIntakeName,MedIntakeMonth,MedIntakeYear,Day1,Day1yes,Day1No,Day1Dosage,Day1Freq,Day1Form,Day1Route,Day2,Day2yes,Day2No,Day2Dosage,Day2Freq,Day2Form,Day2Route,Day3,Day3yes,Day3No,Day3Dosage,Day3Freq,Day3Form,Day3Route,Day4,Day4yes,Day4No,Day4Dosage,Day4Freq,Day4Form,Day4Route,Day5,Day5Yes,Day5No,Day6,Day6Yes,Day6No,Day6Freq,Day7,Day7Yes,Day7No,Day7Dosage,Day7Freq,Day7Form,Day7Route,Day8,Day8Yes,Day8Dosage,Day8Freq,Day8Form,Day8Route,Day9,Day9yes,Day9No,Day9Dosage,Day9Freq,Day9Form,Day9Route,Day10,Day10yes,Day10No,Day10Dosage,Day10Freq,Day10Form,Day10Route,Day11,Day11Yes,Day11No,Day11Dosage,Day11Freq,Day11Form,Day11Route,Day12,Day12Yes,Day12No,Day12Dosage,Day12Freq,Day12Form,Day12Route,Day13,Day13Yes,Day13No,Day13Dosage,Day13Freq,Day13Form,Day13Route,Day14,Day14Yes,Day14No,Day14Dosage,Day14Freq,Day14Form,Day14Route,Day15,Day15Yes,Day15No,Day15Dosage,Day15Freq,Day15Form,Day15Route,Day16,Day16Yes,Day16No,Day16Dosage,Day16Freq,Day16Form,Day16Route,Day17,Day17Yes,Day17No,Day17Dosage,Day17Freq,Day17Form,Day17Route,Day18,Day18Yes,Day18No,Day18Dosage,Day18Freq,Day18Form,Day18Route,Day19,Day19Yes,Day19No,Day19Dosage,Day19Freq,Day19Form,Day19Route,Day20,Day20Yes,Day20Dosage,Day20Freq,Day20Form,Day20Route,Day21,Day21Yes,Day21Dosage,Day21Freq,Day21Form,Day21Route,Day22,Day22Yes,Day22No,Day22Dosage,Day22Freq,Day22Form,Day22Route,Day23No,Day23Dosage,Day23Freq,Day23Route,Day24,Day24Yes,Day25,Day25Yes,Day25No,Day25Dosage,Day25Freq,Day25Route,Day26,Day26Yes,Day26No,Day26Dosage,Day26Frequency,Day26Route,Day27,Day27Yes,Day27Dosage,Day27Freq,Day27Form,Day27Route,Day28,Day28Yes,Day29Yes,Day29Dosage,Day29Freq,Day29Route,Day30,Day30Dosage,Day30Freq,Day30Form,Day31,Day31Yes,Day31No,Day31Dosage,Day31Freq,Day31Form,Day31Route,Med1Route,Day23Yes,Day24No,Day23,Day24Dosage,Day24Route,Med2Route,Day30Yes,Day5Dosage,Day6Form,Day30Route,Day24Freq,ParticipantID,Allergy2,Med1Form,Day28No,Med1Dosage,Day24Form,Med2Dosage,Day5Route,Med2Frequency,Med2Instructions,Day26Form,Day20No,Day25Form,Med4Frequency,Day30No,Day23Form,Day28Dosage,Med4Route,Med4Instructions,Med4Dosage,Day27No,Med1Instruction,Day29,Day6Route,Day28Route,Day28Form,Day5Form,Day29No,Day5Freq,Day28Freq,Day6Dosage,Med1Freq,Day29Form,Med4Form,Med2Form,Day8No,Day21No
+DINEO SEHUDIE,MODIMAKWANE,"2416 70 th AVE W
+APT
+B6",UNIVERSITY PLACE,WA,98466,253 227 3025,"1
+HOUSE DUST",LAKEWOOD,2028 3rd Lake,253 227 3025,DR LORRI WELLER,WALGREENS,253 227 3025,:unselected:,Buprenorphine,:unselected:,Naltrexone,:selected:,Methadone,50mg,"1
+time(s) DAILY",CAPSULE,ORAL,Take I pill daily,:unselected:,Other:,METHADONE,JULY,2024,1,:selected:,:unselected:,50mg,"1
+time(s)|
+DAILS",FRACC,ORAL,2,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORAL,3,:selected:,:unselected:,50 mg,time(s) DAILY,CAPSULE,DRAL,4,:selected:,:unselected:,50mg,"1
+time(s)",CAPSULE,ORAL,5,:unselected:,:selected:,6,:unselected:,:selected:,time(s),7,:selected:,:unselected:,50mg,"1
+time(s) DAILY",CAPSULE,ORAL,8,:selected:,50mg,"time(s)
+DAILY",CAPSULE,ORAL,9,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORAL,10,:selected:,:unselected:,50 mg,"time(s)
+DAHL",CARSULLE,ORAL,11,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORAL,12,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,DRAL,13,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORAL,14,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORAL,15,:selected:,:unselected:,50 mg,time(s) DAILY,CAPSULE,ORAL,16,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORAL,17,:selected:,:unselected:,50 mq,time(s) DAILY,CAPSULE,O RAI,18,:selected:,:unselected:,50 mg,time(s) DAILY,CARSULI,ORAL,19,:selected:,:unselected:,50 mã,time(s) DAIND,CAPSULE,ORAL,20,:selected:,50 mg,time(s) DAILY,CAPSULE,ORAL,"21
+4",:selected:,50 mg,time(s) DAILN,CABULE,ORAI,22,:selected:,:unselected:,50 mg,"time(s)
+DAILY",CAPSULE,ORA,:unselected:,50 mg,"time(s) DAILY
+CAPSULE",ORAL,24,:selected:,25,:selected:,:unselected:,50 mg,"time(s)
+DAILY
+CAPSULE",ORAL,26,:selected:,:unselected:,50 mg,"time(s)
+DAILY
+CAPSULE",DRAL,27,:selected:,"mg
+mg","time(s)
+DAILY
 time(s)
-daily",Liquid,oral,3,:selected:,:unselected:,Bml,"1
-time(s)",oral,4,:selected:,:unselected:,5 ml,"1
-time(s)",oral,5,:selected:,:unselected:,5ml,"1
-time(s)
-daily Liquid",oral,6,:selected:,:unselected:,5ml,"1
-time(s)
-daily",ORAL,7,:selected:,5 ml,"1
-time(s)
-daily
-Liquid",Liquid,oral,8,:selected:,time(s),9,:selected:,:unselected:,5ml,"1
-time(s)
-daily",Liquid,Oral,10,:selected:,:unselected:,5ml,"1
-time(s)
-Jail",Liquid,oral,11,:selected:,:unselected:,5ml,"1 time(s)
-daily",Liquid,oral,12,:selected:,:unselected:,5ml,"1
-time(s) DAILY",13,:unselected:,:selected:,time(s),14,:selected:,:unselected:,5ml,"time(s)
-DAILY",LIQUID,ORAL,15,:selected:,:unselected:,5 ml,time(s),DAILYLIQUID,ORAL,16,:selected:,:unselected:,5ml,1 time(s),DAILY LIQUID,ORAL,17,:selected:,:unselected:,5ml,"1
-time(s)",DAILYITQUID,ORAL,18,:selected:,:unselected:,5ml,"1
-time(s) DAILY",LIQUID,ORAL,19,:selected:,:unselected:,5ml,"1
-time(s)
-DAILY",LIQUID,ORAL,20,:selected:,5ml,time(s),"LIQUID
-DAILY",ORAL,21,:selected:,:unselected:,5ml,"1
-time(s) DAILY",LIQUID,ORAL,22,:selected:,:unselected:,5mg,"1
-time(s)
-ETLY",LIQUID,ORAL,:selected:,5ml,ORAL.,"24
-25",:unselected:,LIQUID,:selected:,ORAL,26,:selected:,:unselected:,"5ml
-5ml","1
-DAILY LIQUID",27,:selected:,5 ml,"1
-time(s)",OBAL,28,5ml,LIQUID,ORAL,29,:selected:,:unselected:,5ml,"1
-time(s) DAILY LIQUID","ORAL
-ORAL",30,:selected:,:unselected:,5ml,"1
-time(s) DAILY",31,:selected:,:unselected:,5ml,"1
-DAILY",LIQUID,ORAL,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+DAILY
+CAPSULE",CAPSULE,"ORAL
+ORAL",28,:selected:,:selected:,mg,DAILY,ORAL,30,mg,time(s),CAPSULE,31,:selected:,:unselected:,50,"time(s)
+DAILY",CAPSULE,ORAL,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
