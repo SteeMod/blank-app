@@ -7,7 +7,7 @@ import datetime
 st.title("Review Form For Accuracy")
 
 # Create BlobServiceClient object with hardcoded connection string
-connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEWV0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
 def get_latest_blob(container_name, folder_name):
@@ -49,29 +49,32 @@ with st.form("Review"):
             # Convert row data to DataFrame
             df = pd.DataFrame([row_data])
 
-            # Extract columns containing "Day" and reshape to 31x7 table
-            day_columns = [col for col in df.columns if "Day" in col]
-            reshaped_data = df[day_columns].values.reshape(-1, 7)
-            reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
+            # Create a DataFrame for Day29, Day30, and Day31
+            days_df = pd.DataFrame({
+                'Day': [row_data.get('Day29', ''), row_data.get('Day30', ''), row_data.get('Day31', '')],
+                'Yes': [row_data.get('Day29Yes', ''), row_data.get('Day30Yes', ''), row_data.get('Day31Yes', '')],
+                'No': [row_data.get('Day29No', ''), row_data.get('Day30No', ''), row_data.get('Day31No', '')],
+                'Dosage': [row_data.get('Day29Dosage', ''), row_data.get('Day30Dosage', ''), row_data.get('Day31Dosage', '')],
+                'Freq': [row_data.get('Day29Freq', ''), row_data.get('Day30Freq', ''), row_data.get('Day31Freq', '')],
+                'Form': [row_data.get('Day29Form', ''), row_data.get('Day30Form', ''), row_data.get('Day31Form', '')],
+                'Route': [row_data.get('Day29Route', ''), row_data.get('Day30Route', ''), row_data.get('Day31Route', '')]
+            })
 
-            # Create a dictionary to store edited values
-            edited_values = {}
-
-            # Iterate through each row and create input fields
-            for i, row in reshaped_df.iterrows():
-                cols = st.columns(7)
-                for j, col in enumerate(reshaped_df.columns):
-                    key = f"{col}{i+1}"
-                    edited_values[key] = cols[j].text_input(key, value=str(row[col]))
+            # Display the DataFrame in an editable table
+            edited_days_df = st.data_editor(days_df, key="editable_days_table")
 
             # Submit button
             submitted = st.form_submit_button("Submit")
             if submitted:
                 # Update the original DataFrame with the edited values
-                for i, row in reshaped_df.iterrows():
-                    for j, col in enumerate(reshaped_df.columns):
-                        key = f"{col}{i+1}"
-                        df.at[0, f"{col}{i+1}"] = edited_values[key]
+                for i, day in enumerate(['Day29', 'Day30', 'Day31']):
+                    df.at[0, f'{day}'] = edited_days_df.at[i, 'Day']
+                    df.at[0, f'{day}Yes'] = edited_days_df.at[i, 'Yes']
+                    df.at[0, f'{day}No'] = edited_days_df.at[i, 'No']
+                    df.at[0, f'{day}Dosage'] = edited_days_df.at[i, 'Dosage']
+                    df.at[0, f'{day}Freq'] = edited_days_df.at[i, 'Freq']
+                    df.at[0, f'{day}Form'] = edited_days_df.at[i, 'Form']
+                    df.at[0, f'{day}Route'] = edited_days_df.at[i, 'Route']
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
