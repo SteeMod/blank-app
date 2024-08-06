@@ -24,7 +24,7 @@ csv_data = download_stream.readall()
 df = pd.read_csv(io.BytesIO(csv_data))
 
 # Extract the Form Recognizer output from the relevant column
-form_recognizer_output = df['FormRecognizerOutput']
+form_recognizer_output = df['MedicationIntakeTable']
 
 # Convert the Form Recognizer output to a DataFrame
 form_recognizer_df = pd.DataFrame.from_records(form_recognizer_output.apply(eval).tolist())
