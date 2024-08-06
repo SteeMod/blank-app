@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import json
 from azure.storage.blob import BlobServiceClient
 import io
 
@@ -23,12 +24,27 @@ csv_data = download_stream.readall()
 # Load the CSV data into a pandas DataFrame
 df = pd.read_csv(io.BytesIO(csv_data))
 
-# Extract the Form Recognizer output from the relevant column
-form_recognizer_output = df['Medication Plan']
+# Check if the 'Medication plan' column exists
+if 'Medication plan' in df.columns:
+    # Extract the 'Medication plan' column data
+    medication_plan_data = df[['Medication plan']]
 
-# Convert the Form Recognizer output to a DataFrame
-form_recognizer_df = pd.DataFrame.from_records(form_recognizer_output.apply(eval).tolist())
+    # Convert the extracted data to a dictionary
+    medication_plan_dict = medication_plan_data.to_dict(orient='records')
 
-# Display the DataFrame in Streamlit
-st.title("Form Recognizer Output")
-st.dataframe(form_recognizer_df)
+    # Display the DataFrame as a table on the webpage
+    st.title("Medication Plan Data Table")
+    st.table(medication_plan_data)
+
+    # Display the dictionary on the webpage
+    st.write("Medication Plan Data Dictionary")
+    st.json(medication_plan_dict)
+else:
+    st.error("Column 'Medication plan' not found in the CSV file.")
+
+# Optionally, you can save the DataFrame back to Azure Blob Storage
+if st.button("Save Data"):
+    output = io.StringIO()
+    df.to_csv(output, index=False)
+    blob_client.upload_blob(output.getvalue(), overwrite=True)
+    st.success("Data saved successfully!")
