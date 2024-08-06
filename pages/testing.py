@@ -51,20 +51,25 @@ with st.form("Review"):
 
             # Extract columns 31 to 247 and reshape to 31x7 table
             columns_to_extract = df.columns[29:246]  # 0-based index, so column 31 is index 30
-            reshaped_data = df[columns_to_extract].values.reshape(31, 7)
-            reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
+            reshaped_data = df[columns_to_extract].values
 
-            # Display the reshaped DataFrame in an editable table
-            edited_df = st.data_editor(reshaped_df)
+            if reshaped_data.size == 217:  # 31 * 7 = 217
+                reshaped_data = reshaped_data.reshape(31, 7)
+                reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
-            # Submit button
-            submitted = st.form_submit_button("Submit")
-            if submitted:
-                # Update the original DataFrame with the edited values
-                df.update(edited_df.values.flatten())
+                # Display the reshaped DataFrame in an editable table
+                edited_df = st.data_editor(reshaped_df)
 
-                # Upload the updated DataFrame back to the blob storage
-                timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-                blob_name = f"ReviewedFiles/review_{timestamp}.csv"
-                upload_blob_data('data1', blob_name, df)
-                st.write("Data has been updated and uploaded successfully.")
+                # Submit button
+                submitted = st.form_submit_button("Submit")
+                if submitted:
+                    # Update the original DataFrame with the edited values
+                    df.update(edited_df.values.flatten())
+
+                    # Upload the updated DataFrame back to the blob storage
+                    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+                    blob_name = f"ReviewedFiles/review_{timestamp}.csv"
+                    upload_blob_data('data1', blob_name, df)
+                    st.write("Data has been updated and uploaded successfully.")
+            else:
+                st.write("The data does not have the expected shape.")
