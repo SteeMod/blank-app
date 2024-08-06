@@ -40,10 +40,10 @@ def parse_form_recognizer_output(json_data):
         st.error(f"Invalid JSON data: {json_data}")
         return None
 
-if 'FormRecognizerOutput' in df.columns:
-    df['ParsedOutput'] = df['FormRecognizerOutput'].apply(parse_form_recognizer_output)
+if 'MedicationIntakeTable' in df.columns:
+    df['ParsedOutput'] = df['MedicationIntakeTable'].apply(parse_form_recognizer_output)
 else:
-    st.error("Column 'FormRecognizerOutput' not found in the CSV file.")
+    st.error("Column 'MedicationIntakeTable' not found in the CSV file.")
 
 # Display the parsed data in Streamlit
 st.title("Azure Form Recognizer Output")
