@@ -25,9 +25,9 @@ csv_data = download_stream.readall()
 df = pd.read_csv(io.BytesIO(csv_data))
 
 # Check if the 'Medication plan' column exists
-if 'Medication plan' in df.columns:
+if 'Medication Plan' in df.columns:
     # Extract the 'Medication plan' column data
-    medication_plan_data = df[['Medication plan']]
+    medication_plan_data = df[['Medication Plan']]
 
     # Convert the extracted data to a dictionary
     medication_plan_dict = medication_plan_data.to_dict(orient='records')
@@ -40,7 +40,7 @@ if 'Medication plan' in df.columns:
     st.write("Medication Plan Data Dictionary")
     st.json(medication_plan_dict)
 else:
-    st.error("Column 'Medication plan' not found in the CSV file.")
+    st.error("Column 'Medication Plan' not found in the CSV file.")
 
 # Optionally, you can save the DataFrame back to Azure Blob Storage
 if st.button("Save Data"):
