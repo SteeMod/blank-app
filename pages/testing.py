@@ -39,7 +39,7 @@ def upload_blob_data(container_name, blob_name, data):
     except Exception as e:
         st.write(f"Error occurred: {e}")
 
-# Review button
+# Review form
 with st.form("Review"):
     latest_blob = get_latest_blob('data1', 'CookedFiles/')
     if latest_blob is not None:
@@ -89,3 +89,5 @@ with st.form("Review"):
             blob_name = f"ReviewedFiles/review_{timestamp}.csv"
             upload_blob_data('data1', blob_name, form_data)
             st.write("Form data uploaded successfully.")
+
+    submit_button = st.form_submit_button(label='Submit')
