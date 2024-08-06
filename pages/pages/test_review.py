@@ -28,14 +28,14 @@ df = pd.read_csv(io.BytesIO(csv_data))
 if 'MedicationIntakeTable' in df.columns:
     df['MedicationIntakeTable'] = df['MedicationIntakeTable'].apply(json.loads)
 else:
-    st.error("Column 'MedicationIntake' not found in the CSV file.")
+    st.error("Column 'MedicationIntakeTable' not found in the CSV file.")
 
 # Display the dataframe in Streamlit
 st.title("Editable DataFrame - Medication Intake Table")
 if 'MedicationIntakeTable' in df.columns:
     edited_df = st.data_editor(df)
 else:
-    st.error("Column 'MedicationIntake' not found in the CSV file.")
+    st.error("Column 'MedicationIntakeTable' not found in the CSV file.")
 
 # Optionally, you can save the edited DataFrame back to Azure Blob Storage
 if st.button("Save Changes"):
