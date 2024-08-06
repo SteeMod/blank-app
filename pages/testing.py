@@ -53,10 +53,6 @@ with st.form("Review"):
             columns_to_extract = df.columns[30:247]  # 0-based index, so column 31 is index 30
             extracted_data = df[columns_to_extract].values.flatten()
 
-            # Debugging: Print the extracted data
-            st.write("Extracted Data:")
-            st.write(extracted_data)
-
             # Create a new DataFrame with 31 rows and 7 columns
             reshaped_data = []
             for i in range(31):
@@ -66,14 +62,23 @@ with st.form("Review"):
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
             # Display the reshaped DataFrame in an editable table
-            edited_df = st.data_editor(reshaped_df)
+            edited_data = {}
+            for i in range(31):
+                for col in reshaped_df.columns:
+                    key = f"{i}_{col}"
+                    edited_data[key] = st.text_input(key, reshaped_df.at[i, col])
 
             # Submit button
             submitted = st.form_submit_button("Submit")
             if submitted:
                 # Update the original DataFrame with the edited values
                 for i in range(31):
-                    df.iloc[0, 30 + i*7:30 + (i+1)*7] = edited_df.iloc[i].values
+                    for col in reshaped_df.columns:
+                        key = f"{i}_{col}"
+                        reshaped_df.at[i, col] = edited_data[key]
+                
+                for i in range(31):
+                    df.iloc[0, 30 + i*7:30 + (i+1)*7] = reshaped_df.iloc[i].values
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
