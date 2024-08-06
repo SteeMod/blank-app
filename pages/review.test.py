@@ -1,5 +1,30 @@
 import streamlit as st
 
+# Example data for row_data
+row_data = {
+    'Day29': '2024-08-05',
+    'Day29Yes': 'Yes',
+    'Day29No': 'No',
+    'Day29Dosage': '5ml',
+    'Day29Freq': '1 time(s) daily',
+    'Day29Form': 'Tablet',
+    'Day29Route': 'Oral',
+    'Day30': '2024-08-06',
+    'Day30Yes': 'Yes',
+    'Day30No': 'No',
+    'Day30Dosage': '10ml',
+    'Day30Freq': '2 time(s) daily',
+    'Day30Form': 'Liquid',
+    'Day30Route': 'Oral',
+    'Day31': '2024-08-07',
+    'Day31Yes': 'Yes',
+    'Day31No': 'No',
+    'Day31Dosage': '15ml',
+    'Day31Freq': '3 time(s) daily',
+    'Day31Form': 'Capsule',
+    'Day31Route': 'Oral'
+}
+
 # Define the data for each day
 days = [
     {'Day': 'Day29', 'Yes': 'Day29Yes', 'No': 'Day29No', 'Dosage': 'Day29Dosage', 'Frequency': 'Day29Freq', 'Form': 'Day29Form', 'Route': 'Day29Route'},
