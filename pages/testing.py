@@ -49,20 +49,29 @@ with st.form("Review"):
             # Convert row data to DataFrame
             df = pd.DataFrame([row_data])
 
-            # Extract columns 31 to 247 and reshape to 31x7 table
-            columns_to_extract = df.columns[30:247]  # 0-based index, so column 31 is index 30
-            reshaped_data = df[columns_to_extract].values.reshape(31, 7)
+            # Extract columns containing "Day" and reshape to 31x7 table
+            day_columns = [col for col in df.columns if "Day" in col]
+            reshaped_data = df[day_columns].values.reshape(-1, 7)
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
-            # Display the reshaped DataFrame in an editable table
-            edited_df = st.data_editor(reshaped_df, key="editable_table")
+            # Create a dictionary to store edited values
+            edited_values = {}
+
+            # Iterate through each row and create input fields
+            for i, row in reshaped_df.iterrows():
+                cols = st.columns(7)
+                for j, col in enumerate(reshaped_df.columns):
+                    key = f"{col}{i+1}"
+                    edited_values[key] = cols[j].text_input(key, value=str(row[col]))
 
             # Submit button
             submitted = st.form_submit_button("Submit")
             if submitted:
                 # Update the original DataFrame with the edited values
-                for i, col in enumerate(columns_to_extract):
-                    df[col] = edited_df.values.flatten()[i::31]
+                for i, row in reshaped_df.iterrows():
+                    for j, col in enumerate(reshaped_df.columns):
+                        key = f"{col}{i+1}"
+                        df.at[0, f"{col}{i+1}"] = edited_values[key]
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
