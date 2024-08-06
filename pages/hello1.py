@@ -1,10 +1,10 @@
 import streamlit as st
 import prompts
 import re
-from openai import OpenAI
+import openai
 from model_utils import call_chat_model, call_image_model
 
-client = OpenAI()
+client = openai.OpenAI()
 
 st.set_page_config(layout="wide")
 
