@@ -50,7 +50,7 @@ with st.form("Review"):
             df = pd.DataFrame([row_data])
 
             # Extract columns 31 to 247 and reshape to 31x7 table
-            columns_to_extract = df.columns[30:247]  # 0-based index, so column 31 is index 30
+            columns_to_extract = df.columns[29:247]  # 0-based index, so column 31 is index 30
             reshaped_data = df[columns_to_extract].values.reshape(31, 7)
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
