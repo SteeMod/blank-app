@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import json
 from azure.storage.blob import BlobServiceClient
 import io
 
@@ -23,12 +24,18 @@ csv_data = download_stream.readall()
 # Load the CSV data into a pandas DataFrame
 df = pd.read_csv(io.BytesIO(csv_data))
 
-# Display only the MedicationIntakeTable column in Streamlit
+# Convert JSON data in the MedicationIntake column to a dictionary
+if 'MedicationIntakeTable' in df.columns:
+    df['MedicationIntakeTable'] = df['MedicationIntakeTable'].apply(json.loads)
+else:
+    st.error("Column 'MedicationIntake' not found in the CSV file.")
+
+# Display the dataframe in Streamlit
 st.title("Editable DataFrame - Medication Intake Table")
 if 'MedicationIntakeTable' in df.columns:
-    edited_df = st.data_editor(df[['MedicationIntakeTable']])
+    edited_df = st.data_editor(df)
 else:
-    st.error("Column 'MedicationIntakeTable' not found in the CSV file.")
+    st.error("Column 'MedicationIntake' not found in the CSV file.")
 
 # Optionally, you can save the edited DataFrame back to Azure Blob Storage
 if st.button("Save Changes"):
