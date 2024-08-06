@@ -25,7 +25,7 @@ df = pd.read_csv(io.BytesIO(csv_data))
 
 # Display the DataFrame in Streamlit
 st.title("Editable DataFrame")
-edited_df = st.experimental_data_editor(df)
+edited_df = st.data_editor(df)
 
 # Optionally, you can save the edited DataFrame back to Azure Blob Storage
 if st.button("Save Changes"):
