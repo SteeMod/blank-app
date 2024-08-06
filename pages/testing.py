@@ -49,49 +49,22 @@ with st.form("Review"):
             # Convert row data to DataFrame
             df = pd.DataFrame([row_data])
 
-            # Display the DataFrame in an editable table
-            edited_df = st.data_editor(df)
+            # Extract columns 31 to 247 and reshape to 31x7 table
+            columns_to_extract = df.columns[30:247]  # 0-based index, so column 31 is index 30
+            reshaped_data = df[columns_to_extract].values.reshape(31, 7)
+            reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
-            # Extract the edited values
-            try:
-                Day30 = edited_df.at[0, 'Day30']
-                Day30Yes = edited_df.at[0, 'Day30Yes']
-                Day30No = edited_df.at[0, 'Day30No']
-                Day30Dosage = edited_df.at[0, 'Day30Dosage']
-                Day30Freq = edited_df.at[0, 'Day30Freq']
-                Day30Form = edited_df.at[0, 'Day30Form']
-                Day30Route = edited_df.at[0, 'Day30Route']
-                Day31 = edited_df.at[0, 'Day31']
-                Day31Yes = edited_df.at[0, 'Day31Yes']
-                Day31No = edited_df.at[0, 'Day31No']
-                Day31Dosage = edited_df.at[0, 'Day31Dosage']
-                Day31Freq = edited_df.at[0, 'Day31Freq']
-                Day31Form = edited_df.at[0, 'Day31Form']
-                Day31Route = edited_df.at[0, 'Day31Route']
-            except KeyError as e:
-                st.write(f"Column not found: {e}")
-                st.stop()
+            # Display the reshaped DataFrame in an editable table
+            edited_df = st.data_editor(reshaped_df)
 
-            form_data = pd.DataFrame({
-                'Day30': [Day30],
-                'Day30Yes': [Day30Yes],
-                'Day30No': [Day30No],
-                'Day30Dosage': [Day30Dosage],
-                'Day30Freq': [Day30Freq],
-                'Day30Form': [Day30Form],
-                'Day30Route': [Day30Route],
-                'Day31': [Day31],
-                'Day31Yes': [Day31Yes],
-                'Day31No': [Day31No],
-                'Day31Dosage': [Day31Dosage],
-                'Day31Freq': [Day31Freq],
-                'Day31Form': [Day31Form],
-                'Day31Route': [Day31Route],
-            })
+            # Submit button
+            submitted = st.form_submit_button("Submit")
+            if submitted:
+                # Update the original DataFrame with the edited values
+                df.update(edited_df.values.flatten())
 
-            timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-            blob_name = f"ReviewedFiles/review_{timestamp}.csv"
-            upload_blob_data('data1', blob_name, form_data)
-            st.write("Form data uploaded successfully.")
-
-    submit_button = st.form_submit_button(label='Submit')
+                # Upload the updated DataFrame back to the blob storage
+                timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+                blob_name = f"ReviewedFiles/review_{timestamp}.csv"
+                upload_blob_data('data1', blob_name, df)
+                st.write("Data has been updated and uploaded successfully.")
