@@ -7,7 +7,7 @@ import datetime
 st.title("Review Form For Accuracy")
 
 # Create BlobServiceClient object with hardcoded connection string
-connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pGFzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
 def get_latest_blob(container_name, folder_name):
@@ -49,36 +49,19 @@ with st.form("Review"):
             # Convert row data to DataFrame
             df = pd.DataFrame([row_data])
 
-            # Extract columns 31 to 247
-            columns_to_extract = df.columns[30:247]  # 0-based index, so column 31 is index 30
-            extracted_data = df[columns_to_extract].values.flatten()
-
-            # Create a new DataFrame with 31 rows and 7 columns
-            reshaped_data = []
-            for i in range(31):
-                row = extracted_data[i*7:(i+1)*7]
-                reshaped_data.append(row)
-
+            # Extract columns 31 to 247 and reshape to 31x7 table
+            columns_to_extract = df.columns[29:246]  # 0-based index, so column 31 is index 30
+            reshaped_data = df[columns_to_extract].values.reshape(31, 7)
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
             # Display the reshaped DataFrame in an editable table
-            edited_data = {}
-            for i in range(31):
-                for col in reshaped_df.columns:
-                    key = f"{i}_{col}"
-                    edited_data[key] = st.text_input(key, reshaped_df.at[i, col])
+            edited_df = st.data_editor(reshaped_df)
 
             # Submit button
             submitted = st.form_submit_button("Submit")
             if submitted:
                 # Update the original DataFrame with the edited values
-                for i in range(31):
-                    for col in reshaped_df.columns:
-                        key = f"{i}_{col}"
-                        reshaped_df.at[i, col] = edited_data[key]
-                
-                for i in range(31):
-                    df.iloc[0, 30 + i*7:30 + (i+1)*7] = reshaped_df.iloc[i].values
+                df.update(edited_df.values.flatten())
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
