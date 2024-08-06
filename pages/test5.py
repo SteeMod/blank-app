@@ -27,12 +27,3 @@ Day31Freq = edited_df.at[0, 'Day31Freq']
 Day31Form = edited_df.at[0, 'Day31Form']
 Day31Route = edited_df.at[0, 'Day31Route']
 
-# Display the updated values
-st.write("Updated Values:")
-st.write(f"Day31: {Day31}")
-st.write(f"Yes31: {Day31Yes}")
-st.write(f"No31: {Day31No}")
-st.write(f"Dosage31: {Day31Dosage}")
-st.write(f"Frequency31: {Day31Freq}")
-st.write(f"Form31: {Day31Form}")
-st.write(f"Route31: {Day31Route}")
