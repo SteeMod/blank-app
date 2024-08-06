@@ -72,7 +72,8 @@ with st.form("Review"):
             submitted = st.form_submit_button("Submit")
             if submitted:
                 # Update the original DataFrame with the edited values
-                df.update(edited_df.values.flatten())
+                for i in range(31):
+                    df.iloc[0, 30 + i*7:30 + (i+1)*7] = edited_df.iloc[i].values
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
