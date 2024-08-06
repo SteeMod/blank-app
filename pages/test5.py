@@ -27,6 +27,14 @@ df = pd.DataFrame([row_data])
 edited_df = st.data_editor(df)
 
 # Extract the edited values
+
+Day30 = edited_df.at[0, 'Day30']
+Day30Yes = edited_df.at[0, 'Day30Yes']
+Day30No = edited_df.at[0, 'Day30No']
+Day30Dosage = edited_df.at[0, 'Day30Dosage']
+Day30Freq = edited_df.at[0, 'Day30Freq']
+Day30Form = edited_df.at[0, 'Day30Form']
+Day30Route = edited_df.at[0, 'Day30Route']
 Day31 = edited_df.at[0, 'Day31']
 Day31Yes = edited_df.at[0, 'Day31Yes']
 Day31No = edited_df.at[0, 'Day31No']
