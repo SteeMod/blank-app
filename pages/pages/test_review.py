@@ -24,9 +24,16 @@ csv_data = download_stream.readall()
 # Load the CSV data into a pandas DataFrame
 df = pd.read_csv(io.BytesIO(csv_data))
 
-# Convert JSON data in the MedicationIntake column to a dictionary
+# Convert JSON data in the MedicationIntakeTable column to a dictionary
+def safe_json_loads(x):
+    try:
+        return json.loads(x)
+    except json.JSONDecodeError:
+        st.error(f"Invalid JSON data: {x}")
+        return None
+
 if 'MedicationIntakeTable' in df.columns:
-    df['MedicationIntakeTable'] = df['MedicationIntakeTable'].apply(json.loads)
+    df['MedicationIntakeTable'] = df['MedicationIntakeTable'].apply(safe_json_loads)
 else:
     st.error("Column 'MedicationIntakeTable' not found in the CSV file.")
 
