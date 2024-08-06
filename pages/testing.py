@@ -46,6 +46,7 @@ with st.form("Review"):
         data = download_blob_data(latest_blob)
         if data is not None:
             row_data = data.iloc[0]  # assuming you want to display the first row
+            # Convert row data to DataFrame
             df = pd.DataFrame([row_data])
 
             # Display the DataFrame in an editable table
@@ -59,3 +60,32 @@ with st.form("Review"):
             Day30Freq = edited_df.at[0, 'Day30Freq']
             Day30Form = edited_df.at[0, 'Day30Form']
             Day30Route = edited_df.at[0, 'Day30Route']
+            Day31 = edited_df.at[0, 'Day31']
+            Day31Yes = edited_df.at[0, 'Day31Yes']
+            Day31No = edited_df.at[0, 'Day31No']
+            Day31Dosage = edited_df.at[0, 'Day31Dosage']
+            Day31Freq = edited_df.at[0, 'Day31Freq']
+            Day31Form = edited_df.at[0, 'Day31Form']
+            Day31Route = edited_df.at[0, 'Day31Route']
+
+            form_data = pd.DataFrame({
+                'Day30': [Day30],
+                'Day30Yes': [Day30Yes],
+                'Day30No': [Day30No],
+                'Day30Dosage': [Day30Dosage],
+                'Day30Freq': [Day30Freq],
+                'Day30Form': [Day30Form],
+                'Day30Route': [Day30Route],
+                'Day31': [Day31],
+                'Day31Yes': [Day31Yes],
+                'Day31No': [Day31No],
+                'Day31Dosage': [Day31Dosage],
+                'Day31Freq': [Day31Freq],
+                'Day31Form': [Day31Form],
+                'Day31Route': [Day31Route],
+            })
+
+            timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            blob_name = f"ReviewedFiles/review_{timestamp}.csv"
+            upload_blob_data('data1', blob_name, form_data)
+            st.write("Form data uploaded successfully.")
