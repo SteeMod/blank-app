@@ -14,8 +14,8 @@ logging.basicConfig(level=logging.INFO)
 
 def main(uploaded_file):
     try:
-        endpoint = "https://new2two.cognitiveservices.azure.com/"
-        credential = AzureKeyCredential("027ad9245a594c5886cf5d90abecb9d1")
+        endpoint = "https://new1one.cognitiveservices.azure.com/"
+        credential = AzureKeyCredential("a1fb5ca25a77422590c3f85c8961de47")
         client = DocumentAnalysisClient(endpoint, credential)
 
         model_id = "Luke1vs37"
