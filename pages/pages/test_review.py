@@ -23,9 +23,12 @@ csv_data = download_stream.readall()
 # Load the CSV data into a pandas DataFrame
 df = pd.read_csv(io.BytesIO(csv_data))
 
-# Display the DataFrame in Streamlit
-st.title("Editable DataFrame")
-edited_df = st.data_editor(df)
+# Display only the MedicationIntakeTable column in Streamlit
+st.title("Editable DataFrame - Medication Intake Table")
+if 'MedicationIntakeTable' in df.columns:
+    edited_df = st.data_editor(df[['MedicationIntakeTable']])
+else:
+    st.error("Column 'MedicationIntakeTable' not found in the CSV file.")
 
 # Optionally, you can save the edited DataFrame back to Azure Blob Storage
 if st.button("Save Changes"):
