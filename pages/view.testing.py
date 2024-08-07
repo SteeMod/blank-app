@@ -5,7 +5,7 @@ from io import BytesIO
 import base64
 
 # Azure Blob Storage connection details
-connection_string = "DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEWVfrElMx6ZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net"
+connection_string = "DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net"
 container_name = "data1"
 folder_name = "RawFiles"
 
