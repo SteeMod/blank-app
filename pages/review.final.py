@@ -60,9 +60,11 @@ def download_blob_data(blob):
         st.write(f"Error occurred: {e}")
         return None
 
-def upload_blob_data(container_name, blob_name, data):
+def upload_blob_data(container_name, blob_name, data, folder_name="ReviewedFiles"):
     try:
-        blob_client = blob_service_client.get_blob_client(container_name, blob_name)
+        # Create the full path for the blob
+        full_blob_name = f"{folder_name}/{blob_name}"
+        blob_client = blob_service_client.get_blob_client(container_name, full_blob_name)
         output = io.StringIO()
         data.to_csv(output, index=False)
         output.seek(0)
@@ -134,8 +136,8 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
                 
-                # Save the updated data back to the blob
-                upload_blob_data('data1/ReviewedFiles', latest_blob.name, data)
+                # Save the updated data back to the blob in the ReviewedFiles folder
+                upload_blob_data('data1', latest_blob.name, data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
 
     else:
