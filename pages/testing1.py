@@ -66,7 +66,7 @@ with st.form("Review"):
             MedIntakeName = MedIntakeName.text_input("MEDICATION NAME", value=str(row_data.get('MedIntakeName', '')))
             MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
             MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
-
+            
             editable_data = {
                 'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route',
                         'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route',
