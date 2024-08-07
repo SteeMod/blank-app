@@ -1,13 +1,14 @@
 import streamlit as st
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pandas as pd
 import io
 import datetime
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 
 st.title("Review Form For Accuracy")
 
 # Create BlobServiceClient object with hardcoded connection string
-connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEWVfrElMx6ZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
 def get_latest_blob(container_name, folder_name):
@@ -24,7 +25,7 @@ def download_blob_data(blob):
     try:
         blob_client = blob_service_client.get_blob_client('data1', blob.name)
         stream = blob_client.download_blob().readall()
-        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')))
+        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='skip')
     except Exception as e:
         st.write(f"Error occurred: {e}")
         return None
@@ -42,9 +43,9 @@ def upload_blob_data(container_name, blob_name, data):
 # Review form
 with st.form("Review"):
     latest_blob = get_latest_blob('data1', 'CookedFiles/')
-    if (latest_blob is not None):
+    if latest_blob is not None:
         data = download_blob_data(latest_blob)
-        if (data is not None):
+        if data is not None:
             row_data = data.iloc[0]  # assuming you want to display the first row
 
             # Create a new DataFrame with 31 rows and 7 columns
@@ -55,8 +56,20 @@ with st.form("Review"):
 
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
-            # Display the reshaped DataFrame in an editable table
-            edited_data = st.experimental_data_editor(reshaped_df, num_rows="dynamic")
+            # Configure the AgGrid table
+            gb = GridOptionsBuilder.from_dataframe(reshaped_df)
+            gb.configure_default_column(editable=True)
+            grid_options = gb.build()
+
+            # Display the editable table
+            grid_response = AgGrid(
+                reshaped_df,
+                gridOptions=grid_options,
+                update_mode=GridUpdateMode.VALUE_CHANGED,
+                fit_columns_on_grid_load=True
+            )
+
+            edited_df = grid_response['data']
 
             # Submit button
             submitted = st.form_submit_button("Submit")
@@ -64,7 +77,7 @@ with st.form("Review"):
                 # Update the original DataFrame with the edited values
                 for i in range(31):
                     for j, col in enumerate(reshaped_df.columns):
-                        row_data[f'Column_{i*7+j}'] = edited_data.iloc[i, j]
+                        row_data[f'Column_{i*7+j}'] = edited_df.iloc[i, j]
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
