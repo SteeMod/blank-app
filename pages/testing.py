@@ -24,7 +24,7 @@ def download_blob_data(blob):
     try:
         blob_client = blob_service_client.get_blob_client('data1', blob.name)
         stream = blob_client.download_blob().readall()
-        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='null')
+        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')))
     except Exception as e:
         st.write(f"Error occurred: {e}")
         return None
