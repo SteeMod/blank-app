@@ -67,42 +67,19 @@ with st.form("Review"):
             MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
             MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
 
-            # Treatment Plan table
-            Med1Check, Med1Name, Med1Dosage, Med1Frequency, Med1Form, Med1Route, Med1Instructions = st.columns(7)
-            Med1Check = Med1Check.text_input("Select [x]1", value=str(row_data.get('Med1Check', '')))
-            Med1Name = Med1Name.text_input("Medication1", value=str(row_data.get('Med1Name', '')))
-            Med1Dosage = Med1Dosage.text_input("Dosage1", value=str(row_data.get('Med1Dosage', '')))
-            Med1Frequency = Med1Frequency.text_input("Frequency1", value=str(row_data.get('Med1Frequency', '')))
-            Med1Form = Med1Form.text_input("Form1", value=str(row_data.get('Med1Form', '')))
-            Med1Route = Med1Route.text_input("Route1", value=str(row_data.get('Med1Route', '')))
-            Med1Instructions = Med1Instructions.text_input("Instructions1", value=str(row_data.get('Med1Instructions', '')))
-
-            Med2Check, Med2Name, Med2Dosage, Med2Frequency, Med2Form, Med2Route, Med2Instructions = st.columns(7)
-            Med2Check = Med2Check.text_input("Select [x]2", value=str(row_data.get('Med2Check', '')))
-            Med2Name = Med2Name.text_input("Medication2", value=str(row_data.get('Med2Name', '')))
-            Med2Dosage = Med2Dosage.text_input("Dosage2", value=str(row_data.get('Med2Dosage', '')))
-            Med2Frequency = Med2Frequency.text_input("Frequency2", value=str(row_data.get('Med2Frequency', '')))
-            Med2Form = Med2Form.text_input("Form2", value=str(row_data.get('Med2Form', '')))
-            Med2Route = Med2Route.text_input("Route2", value=str(row_data.get('Med2Route', '')))
-            Med2Instructions = Med2Instructions.text_input("Instructions2", value=str(row_data.get('Med2Instructions', '')))
-
-            Med3Check, Med3Name, Med3Dosage, Med3Frequency, Med3Form, Med3Route, Med3Instructions = st.columns(7)
-            Med3Check = Med3Check.text_input("Select [x]3", value=str(row_data.get('Med3Check', '')))
-            Med3Name = Med3Name.text_input("Medication3", value=str(row_data.get('Med3Name', '')))
-            Med3Dosage = Med3Dosage.text_input("Dosage3", value=str(row_data.get('Med3Dosage', '')))
-            Med3Frequency = Med3Frequency.text_input("Frequency3", value=str(row_data.get('Med3Frequency', '')))
-            Med3Form = Med3Form.text_input("Form3", value=str(row_data.get('Med3Form', '')))
-            Med3Route = Med3Route.text_input("Route3", value=str(row_data.get('Med3Route', '')))
-            Med3Instructions = Med3Instructions.text_input("Instructions3", value=str(row_data.get('Med3Instructions', '')))
-
-            Med4Check, Med4Name, Med4Dosage, Med4Frequency, Med4Form, Med4Route, Med4Instructions = st.columns(7)
-            Med4Check = Med4Check.text_input("Select [x]4", value=str(row_data.get('Med4Check', '')))
-            Med4Name = Med4Name.text_input("Medication4", value=str(row_data.get('Med4Name', '')))
-            Med4Dosage = Med4Dosage.text_input("Dosage4", value=str(row_data.get('Med4Dosage', '')))
-            Med4Frequency = Med4Frequency.text_input("Frequency4", value=str(row_data.get('Med4Frequency', '')))
-            Med4Form = Med4Form.text_input("Form4", value=str(row_data.get('Med4Form', '')))
-            Med4Route = Med4Route.text_input("Route4", value=str(row_data.get('Med4Route', '')))
-            Med4Instructions = Med4Instructions.text_input("Instructions4", value=str(row_data.get('Med4Instructions', '')))
+            # Editable table for fields after "YEAR"
+            editable_data = {
+                'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route', 'Med1Instructions',
+                          'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route', 'Med2Instructions',
+                          'Med3Check', 'Med3Name', 'Med3Dosage', 'Med3Frequency', 'Med3Form', 'Med3Route', 'Med3Instructions',
+                          'Med4Check', 'Med4Name', 'Med4Dosage', 'Med4Frequency', 'Med4Form', 'Med4Route', 'Med4Instructions'],
+                'Value': [str(row_data.get('Med1Check', '')), str(row_data.get('Med1Name', '')), str(row_data.get('Med1Dosage', '')), str(row_data.get('Med1Frequency', '')), str(row_data.get('Med1Form', '')), str(row_data.get('Med1Route', '')), str(row_data.get('Med1Instructions', '')),
+                          str(row_data.get('Med2Check', '')), str(row_data.get('Med2Name', '')), str(row_data.get('Med2Dosage', '')), str(row_data.get('Med2Frequency', '')), str(row_data.get('Med2Form', '')), str(row_data.get('Med2Route', '')), str(row_data.get('Med2Instructions', '')),
+                          str(row_data.get('Med3Check', '')), str(row_data.get('Med3Name', '')), str(row_data.get('Med3Dosage', '')), str(row_data.get('Med3Frequency', '')), str(row_data.get('Med3Form', '')), str(row_data.get('Med3Route', '')), str(row_data.get('Med3Instructions', '')),
+                          str(row_data.get('Med4Check', '')), str(row_data.get('Med4Name', '')), str(row_data.get('Med4Dosage', '')), str(row_data.get('Med4Frequency', '')), str(row_data.get('Med4Form', '')), str(row_data.get('Med4Route', '')), str(row_data.get('Med4Instructions', ''))]
+            }
+            editable_df = pd.DataFrame(editable_data)
+            edited_df = st.data_editor(editable_df)
 
             # Treatment Plan table
             day_fields = [f"Day{i}" for i in range(1, 32)]
@@ -116,19 +93,16 @@ with st.form("Review"):
                 day_table[i][5] = st.text_input(f"Form_{i+1}", value=str(row_data.get(f"Day{i+1}Form", '')))
                 day_table[i][6] = st.text_input(f"Route_{i+1}", value=str(row_data.get(f"Day{i+1}Route", '')))
 
-            # Submit button
-            submitted = st.form_submit_button("Submit")
-            if submitted:
-                # Update the data with the new values
-                for i, day in enumerate(day_fields):
-                    data.at[0, day] = day_table[i][0]
-                    data.at[0, f"Day{i+1}yes"] = day_table[i][1]
-                    data.at[0, f"Day{i+1}No"] = day_table[i][2]
-                    data.at[0, f"Day{i+1}Dosage"] = day_table[i][3]
-                    data.at[0, f"Day{i+1}Freq"] = day_table[i][4]
-                    data.at[0, f"Day{i+1}Form"] = day_table[i][5]
-                    data.at[0, f"Day{i+1}Route"] = day_table[i][6]
-
-                # Upload the updated data back to the blob
+            submit_button = st.form_submit_button("Submit")
+            if submit_button:
+                # Update the row_data with edited values
+                for index, row in edited_df.iterrows():
+                    row_data[row['Field']] = row['Value']
+                
+                # Save the updated data back to the blob
                 upload_blob_data('data1', latest_blob.name, data)
-                st.success("Data updated and uploaded successfully!")
+                st.success("Data updated successfully!")
+
+    else:
+        st.write("No files found in the specified container.")
+
