@@ -146,12 +146,11 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Route"] = row['Route']
                 
                 # Save the updated data back to the blob
-                upload_blob_data('data1', latest_blob.name, data)
+                upload_blob_data('data1/ReviewedFiles', latest_blob.name, data)
                 
-                # Move the blob to the ReviewedFiles folder
-                move_blob_to_reviewed(latest_blob.name)
+
                 
-                st.success("Data updated and file moved to ReviewedFiles successfully!")
+                st.success("Data updated and file uploaded succesfully!")
 
     else:
         st.write("No files found in the specified container.")
