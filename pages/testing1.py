@@ -67,20 +67,19 @@ with st.form("Review"):
             MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
             MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
 
-            # Editable table for fields after "YEAR"
             editable_data = {
-                'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route', 'Med1Instructions',
-                          'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route', 'Med2Instructions',
-                          'Med3Check', 'Med3Name', 'Med3Dosage', 'Med3Frequency', 'Med3Form', 'Med3Route', 'Med3Instructions',
-                          'Med4Check', 'Med4Name', 'Med4Dosage', 'Med4Frequency', 'Med4Form', 'Med4Route', 'Med4Instructions'],
-                'Value': [str(row_data.get('Med1Check', '')), str(row_data.get('Med1Name', '')), str(row_data.get('Med1Dosage', '')), str(row_data.get('Med1Frequency', '')), str(row_data.get('Med1Form', '')), str(row_data.get('Med1Route', '')), str(row_data.get('Med1Instructions', '')),
-                          str(row_data.get('Med2Check', '')), str(row_data.get('Med2Name', '')), str(row_data.get('Med2Dosage', '')), str(row_data.get('Med2Frequency', '')), str(row_data.get('Med2Form', '')), str(row_data.get('Med2Route', '')), str(row_data.get('Med2Instructions', '')),
-                          str(row_data.get('Med3Check', '')), str(row_data.get('Med3Name', '')), str(row_data.get('Med3Dosage', '')), str(row_data.get('Med3Frequency', '')), str(row_data.get('Med3Form', '')), str(row_data.get('Med3Route', '')), str(row_data.get('Med3Instructions', '')),
-                          str(row_data.get('Med4Check', '')), str(row_data.get('Med4Name', '')), str(row_data.get('Med4Dosage', '')), str(row_data.get('Med4Frequency', '')), str(row_data.get('Med4Form', '')), str(row_data.get('Med4Route', '')), str(row_data.get('Med4Instructions', ''))]
+                'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route',
+                        'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route',
+                        'Med3Check', 'Med3Name', 'Med3Dosage', 'Med3Frequency', 'Med3Form', 'Med3Route',
+                        'Med4Check', 'Med4Name', 'Med4Dosage', 'Med4Frequency', 'Med4Form', 'Med4Route'],
+                'Value': [str(row_data.get('Med1Check', '')), str(row_data.get('Med1Name', '')), str(row_data.get('Med1Dosage', '')), str(row_data.get('Med1Frequency', '')), str(row_data.get('Med1Form', '')), str(row_data.get('Med1Route', '')),
+                        str(row_data.get('Med2Check', '')), str(row_data.get('Med2Name', '')), str(row_data.get('Med2Dosage', '')), str(row_data.get('Med2Frequency', '')), str(row_data.get('Med2Form', '')), str(row_data.get('Med2Route', '')),
+                        str(row_data.get('Med3Check', '')), str(row_data.get('Med3Name', '')), str(row_data.get('Med3Dosage', '')), str(row_data.get('Med3Frequency', '')), str(row_data.get('Med3Form', '')), str(row_data.get('Med3Route', '')),
+                        str(row_data.get('Med4Check', '')), str(row_data.get('Med4Name', '')), str(row_data.get('Med4Dosage', '')), str(row_data.get('Med4Frequency', '')), str(row_data.get('Med4Form', '')), str(row_data.get('Med4Route', ''))]
             }
+
             editable_df = pd.DataFrame(editable_data)
             edited_df = st.data_editor(editable_df)
-
             # Treatment Plan table
             treatment_plan_data = {
                 'Day': [f"Day{i}" for i in range(1, 32)],
