@@ -60,53 +60,28 @@ with st.form("Review"):
             Allergy1, Allergy2 = st.columns(2)
             Allergy1 = Allergy1.text_input("Allergy1", value=str(row_data.get('Allergy1', '')))
             Allergy2 = Allergy2.text_input("Allergy2", value=str(row_data.get('Allergy2', '')))
-            
+
             # Medication details section
             MedIntakeName, MedIntakeMonth, MedIntakeYear = st.columns(3)
             MedIntakeName = MedIntakeName.text_input("MEDICATION NAME", value=str(row_data.get('MedIntakeName', '')))
             MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
             MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
 
-            # Editable table for fields after "YEAR"
-            editable_data = {
-                'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route', 'Med1Instructions',
-                          'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route', 'Med2Instructions',
-                          'Med3Check', 'Med3Name', 'Med3Dosage', 'Med3Frequency', 'Med3Form', 'Med3Route', 'Med3Instructions',
-                          'Med4Check', 'Med4Name', 'Med4Dosage', 'Med4Frequency', 'Med4Form', 'Med4Route', 'Med4Instructions'],
-                'Value': [str(row_data.get('Med1Check', '')), str(row_data.get('Med1Name', '')), str(row_data.get('Med1Dosage', '')), str(row_data.get('Med1Frequency', '')), str(row_data.get('Med1Form', '')), str(row_data.get('Med1Route', '')), str(row_data.get('Med1Instructions', '')),
-                          str(row_data.get('Med2Check', '')), str(row_data.get('Med2Name', '')), str(row_data.get('Med2Dosage', '')), str(row_data.get('Med2Frequency', '')), str(row_data.get('Med2Form', '')), str(row_data.get('Med2Route', '')), str(row_data.get('Med2Instructions', '')),
-                          str(row_data.get('Med3Check', '')), str(row_data.get('Med3Name', '')), str(row_data.get('Med3Dosage', '')), str(row_data.get('Med3Frequency', '')), str(row_data.get('Med3Form', '')), str(row_data.get('Med3Route', '')), str(row_data.get('Med3Instructions', '')),
-                          str(row_data.get('Med4Check', '')), str(row_data.get('Med4Name', '')), str(row_data.get('Med4Dosage', '')), str(row_data.get('Med4Frequency', '')), str(row_data.get('Med4Form', '')), str(row_data.get('Med4Route', '')), str(row_data.get('Med4Instructions', ''))]
-            }
-            editable_df = pd.DataFrame(editable_data)
-            edited_df = st.data_editor(editable_df)
+            # Editable table for fields containing "Med"
+            med_fields = [field for field in row_data.index if "Med" in field]
+            med_values = [str(row_data.get(field, '')) for field in med_fields]
 
-            # Treatment Plan table
-            treatment_plan_data = {
-                'Day': [f"Day{i}" for i in range(1, 32)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 32)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
-                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
-                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 32)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 32)]
-            }
-            treatment_plan_df = pd.DataFrame(treatment_plan_data)
-            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
+            # Create a 4-column, 7-row layout
+            cols = st.columns(4)
+            for i, field in enumerate(med_fields):
+                col = cols[i % 4]
+                col.text_input(field, value=med_values[i])
 
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 # Update the row_data with edited values
-                for index, row in edited_df.iterrows():
-                    row_data[row['Field']] = row['Value']
-                
-                for index, row in edited_treatment_plan_df.iterrows():
-                    row_data[f"Day{index+1}Yes"] = row['Yes']
-                    row_data[f"Day{index+1}No"] = row['No']
-                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
-                    row_data[f"Day{index+1}Freq"] = row['Frequency']
-                    row_data[f"Day{index+1}Form"] = row['Form']
-                    row_data[f"Day{index+1}Route"] = row['Route']
+                for field in med_fields:
+                    row_data[field] = st.session_state.get(field, row_data[field])
                 
                 # Save the updated data back to the blob
                 upload_blob_data('data1', latest_blob.name, data)
