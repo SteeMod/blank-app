@@ -3,8 +3,8 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pandas as pd
 import io
 import datetime
-import pdfplumber
 from io import BytesIO
+from streamlit_pdf_viewer import pdf_viewer
 
 # Azure Blob Storage connection details
 connection_string = "DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net"
@@ -32,10 +32,8 @@ if latest_blob.name.endswith('.pdf'):
         # Create a BytesIO object from the downloaded blob
         pdf_file = BytesIO(downloaded_blob)
         
-        # Use pdfplumber to read the PDF
-        with pdfplumber.open(pdf_file) as pdf:
-            for page in pdf.pages:
-                st.image(page.to_image().original)
+        # Use streamlit-pdf-viewer to display the PDF
+        pdf_viewer(pdf_file.getvalue())
     except Exception as e:
         st.text(f"Error reading the PDF file: {e}")
 else:
