@@ -1,7 +1,6 @@
 import os
 from azure.storage.blob import BlobServiceClient
 import streamlit as st
-import PyPDF2
 from io import BytesIO
 
 # Azure Blob Storage connection details
@@ -27,16 +26,24 @@ st.title("Latest Reviewed File")
 # Check if the file is a PDF
 if latest_blob.name.endswith('.pdf'):
     try:
-        # Read the PDF file
-        pdf_reader = PyPDF2.PdfReader(BytesIO(downloaded_blob))
-        pdf_text = ""
-        for page in pdf_reader.pages:
-            pdf_text += page.extract_text()
-        st.text(pdf_text)
+        # Create a BytesIO object from the downloaded blob
+        pdf_file = BytesIO(downloaded_blob)
+        
+        # Display the PDF file using an iframe
+        st.download_button(
+            label="Download PDF",
+            data=pdf_file,
+            file_name=latest_blob.name,
+            mime="application/pdf"
+        )
+        
+        # Embed the PDF in an iframe
+        st.components.v1.iframe(
+            src=f"data:application/pdf;base64,{downloaded_blob.encode('base64')}",
+            width=700,
+            height=1000
+        )
     except Exception as e:
         st.text(f"Error reading the PDF file: {e}")
 else:
-    try:
-        st.text(downloaded_blob.decode('utf-8'))
-    except UnicodeDecodeError:
-        st.text("Error decoding the file content. The file may not be in UTF-8 format.")
+    st.text("The latest file is not a PDF.")
