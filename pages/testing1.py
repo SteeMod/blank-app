@@ -1,14 +1,13 @@
 import streamlit as st
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pandas as pd
 import io
 import datetime
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 
 st.title("Review Form For Accuracy")
 
 # Create BlobServiceClient object with hardcoded connection string
-connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEWVfrElMx6ZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
 def get_latest_blob(container_name, folder_name):
@@ -40,7 +39,7 @@ def upload_blob_data(container_name, blob_name, data):
     except Exception as e:
         st.write(f"Error occurred: {e}")
 
-# Review form
+# Review button
 with st.form("Review"):
     latest_blob = get_latest_blob('data1', 'CookedFiles/')
     if latest_blob is not None:
@@ -48,39 +47,70 @@ with st.form("Review"):
         if data is not None:
             row_data = data.iloc[0]  # assuming you want to display the first row
 
-            # Create a new DataFrame with 31 rows and 7 columns
-            reshaped_data = []
-            for i in range(31):
-                row = [row_data.get(f'Column_{i*7+j}', '') for j in range(7)]
-                reshaped_data.append(row)
+            col1, col2 = st.columns(2)
+            FirstName = col1.text_input("FirstName", value=str(row_data.get('FirstName', '')))
+            LastName = col2.text_input("LastName", value=str(row_data.get('LastName', '')))
+            Address = st.text_input("Address", value=str(row_data.get('Address', '')))
+            City, State = st.columns(2)
+            City = City.text_input("City", value=str(row_data.get('City', '')))
+            State = State.text_input("State", value=str(row_data.get('State', '')))
+            ZipCode, Phone = st.columns(2)
+            ZipCode = ZipCode.text_input("ZipCode", value=str(row_data.get('ZipCode', '')))
+            Phone = Phone.text_input("Phone", value=str(row_data.get('Phone', '')))
+            Allergy1, Allergy2 = st.columns(2)
+            Allergy1 = Allergy1.text_input("Allergy1", value=str(row_data.get('Allergy1', '')))
+            Allergy2 = Allergy2.text_input("Allergy2", value=str(row_data.get('Allergy2', '')))
+            
+            # Medication details section
+            MedIntakeName, MedIntakeMonth, MedIntakeYear = st.columns(3)
+            MedIntakeName = MedIntakeName.text_input("MEDICATION NAME", value=str(row_data.get('MedIntakeName', '')))
+            MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
+            MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
 
-            reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
+            # Editable table for fields after "YEAR"
+            editable_data = {
+                'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route', 'Med1Instructions',
+                          'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route', 'Med2Instructions',
+                          'Med3Check', 'Med3Name', 'Med3Dosage', 'Med3Frequency', 'Med3Form', 'Med3Route', 'Med3Instructions',
+                          'Med4Check', 'Med4Name', 'Med4Dosage', 'Med4Frequency', 'Med4Form', 'Med4Route', 'Med4Instructions'],
+                'Value': [str(row_data.get('Med1Check', '')), str(row_data.get('Med1Name', '')), str(row_data.get('Med1Dosage', '')), str(row_data.get('Med1Frequency', '')), str(row_data.get('Med1Form', '')), str(row_data.get('Med1Route', '')), str(row_data.get('Med1Instructions', '')),
+                          str(row_data.get('Med2Check', '')), str(row_data.get('Med2Name', '')), str(row_data.get('Med2Dosage', '')), str(row_data.get('Med2Frequency', '')), str(row_data.get('Med2Form', '')), str(row_data.get('Med2Route', '')), str(row_data.get('Med2Instructions', '')),
+                          str(row_data.get('Med3Check', '')), str(row_data.get('Med3Name', '')), str(row_data.get('Med3Dosage', '')), str(row_data.get('Med3Frequency', '')), str(row_data.get('Med3Form', '')), str(row_data.get('Med3Route', '')), str(row_data.get('Med3Instructions', '')),
+                          str(row_data.get('Med4Check', '')), str(row_data.get('Med4Name', '')), str(row_data.get('Med4Dosage', '')), str(row_data.get('Med4Frequency', '')), str(row_data.get('Med4Form', '')), str(row_data.get('Med4Route', '')), str(row_data.get('Med4Instructions', ''))]
+            }
+            editable_df = pd.DataFrame(editable_data)
+            edited_df = st.data_editor(editable_df)
 
-            # Configure the AgGrid table
-            gb = GridOptionsBuilder.from_dataframe(reshaped_df)
-            gb.configure_default_column(editable=True)
-            grid_options = gb.build()
+            # Treatment Plan table
+            treatment_plan_data = {
+                'Day': [f"Day{i}" for i in range(1, 32)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 32)],
+                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
+                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
+                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
+                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 32)],
+                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 32)]
+            }
+            treatment_plan_df = pd.DataFrame(treatment_plan_data)
+            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
-            # Display the editable table
-            grid_response = AgGrid(
-                reshaped_df,
-                gridOptions=grid_options,
-                update_mode=GridUpdateMode.VALUE_CHANGED,
-                fit_columns_on_grid_load=True
-            )
+            submit_button = st.form_submit_button("Submit")
+            if submit_button:
+                # Update the row_data with edited values
+                for index, row in edited_df.iterrows():
+                    row_data[row['Field']] = row['Value']
+                
+                for index, row in edited_treatment_plan_df.iterrows():
+                    row_data[f"Day{index+1}Yes"] = row['Yes']
+                    row_data[f"Day{index+1}No"] = row['No']
+                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
+                    row_data[f"Day{index+1}Freq"] = row['Frequency']
+                    row_data[f"Day{index+1}Form"] = row['Form']
+                    row_data[f"Day{index+1}Route"] = row['Route']
+                
+                # Save the updated data back to the blob
+                upload_blob_data('data1', latest_blob.name, data)
+                st.success("Data updated successfully!")
 
-            edited_df = grid_response['data']
-
-            # Submit button
-            submitted = st.form_submit_button("Submit")
-            if submitted:
-                # Update the original DataFrame with the edited values
-                for i in range(31):
-                    for j, col in enumerate(reshaped_df.columns):
-                        row_data[f'Column_{i*7+j}'] = edited_df.iloc[i, j]
-
-                # Upload the updated DataFrame back to the blob storage
-                timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-                blob_name = f"ReviewedFiles/review_{timestamp}.csv"
-                upload_blob_data('data1', blob_name, data)
-                st.write("Data has been updated and uploaded successfully.")
+    else:
+        st.write("No files found in the specified container.")
