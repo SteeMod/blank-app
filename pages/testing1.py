@@ -81,11 +81,32 @@ with st.form("Review"):
             editable_df = pd.DataFrame(editable_data)
             edited_df = st.data_editor(editable_df)
 
+            # Treatment Plan table
+            treatment_plan_data = {
+                'Day': [f"Day{i}" for i in range(1, 32)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 32)],
+                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
+                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
+                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
+                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 32)],
+                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 32)]
+            }
+            treatment_plan_df = pd.DataFrame(treatment_plan_data)
+            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
+
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 # Update the row_data with edited values
                 for index, row in edited_df.iterrows():
                     row_data[row['Field']] = row['Value']
+                
+                for index, row in edited_treatment_plan_df.iterrows():
+                    row_data[f"Day{index+1}Yes"] = row['Yes']
+                    row_data[f"Day{index+1}No"] = row['No']
+                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
+                    row_data[f"Day{index+1}Freq"] = row['Frequency']
+                    row_data[f"Day{index+1}Form"] = row['Form']
+                    row_data[f"Day{index+1}Route"] = row['Route']
                 
                 # Save the updated data back to the blob
                 upload_blob_data('data1', latest_blob.name, data)
