@@ -24,7 +24,7 @@ def download_blob_data(blob):
     try:
         blob_client = blob_service_client.get_blob_client('data1', blob.name)
         stream = blob_client.download_blob().readall()
-        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='skip')
+        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='null')
     except Exception as e:
         st.write(f"Error occurred: {e}")
         return None
@@ -42,9 +42,9 @@ def upload_blob_data(container_name, blob_name, data):
 # Review form
 with st.form("Review"):
     latest_blob = get_latest_blob('data1', 'CookedFiles/')
-    if latest_blob is not None:
+    if (latest_blob is not None):
         data = download_blob_data(latest_blob)
-        if data is not None:
+        if (data is not None):
             row_data = data.iloc[0]  # assuming you want to display the first row
 
             # Create a new DataFrame with 31 rows and 7 columns
@@ -56,7 +56,7 @@ with st.form("Review"):
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
             # Display the reshaped DataFrame in an editable table
-            edited_data = st._data_editor(reshaped_df, num_rows="dynamic")
+            edited_data = st.experimental_data_editor(reshaped_df, num_rows="dynamic")
 
             # Submit button
             submitted = st.form_submit_button("Submit")
