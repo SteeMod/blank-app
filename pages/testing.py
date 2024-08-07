@@ -7,7 +7,7 @@ import datetime
 st.title("Review Form For Accuracy")
 
 # Create BlobServiceClient object with hardcoded connection string
-connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEWV0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net'
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
 def get_latest_blob(container_name, folder_name):
@@ -56,7 +56,7 @@ with st.form("Review"):
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
             # Display the reshaped DataFrame in an editable table
-            edited_data = st.dataframe(reshaped_df)
+            edited_df = st.experimental_data_editor(reshaped_df)
 
             # Submit button
             submitted = st.form_submit_button("Submit")
@@ -64,7 +64,7 @@ with st.form("Review"):
                 # Update the original DataFrame with the edited values
                 for i in range(31):
                     for j, col in enumerate(reshaped_df.columns):
-                        row_data[f'Column_{i*7+j}'] = edited_data.iloc[i, j]
+                        row_data[f'Column_{i*7+j}'] = edited_df.iloc[i, j]
 
                 # Upload the updated DataFrame back to the blob storage
                 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
