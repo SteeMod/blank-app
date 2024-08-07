@@ -7,7 +7,7 @@ from io import BytesIO
 from streamlit_pdf_viewer import pdf_viewer
 
 # Azure Blob Storage connection details
-connection_string = "DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEW0V0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UqHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net"
+connection_string = "DefaultEndpointsProtocol=https;AccountName=devcareall;AccountKey=GEWV0frElMx6YmZyObMDqJWDj3pG0FzJCTkCaknW/JMH9UHqNzeFhF/WWCUKeIj3LNN5pb/hl9+AStHMGKFA==;EndpointSuffix=core.windows.net"
 container_name = "data1"
 folder_name = "RawFiles"
 
@@ -60,15 +60,17 @@ def download_blob_data(blob):
         st.write(f"Error occurred: {e}")
         return None
 
-def upload_blob_data(container_name, blob_name, data, folder_name="ReviewedFiles"):
+def upload_blob_data(container_name, data, folder_name="ReviewedFiles"):
     try:
-        # Create the full path for the blob
-        full_blob_name = f"{folder_name}/{blob_name}"
-        blob_client = blob_service_client.get_blob_client(container_name, full_blob_name)
+        # Generate a new filename with a timestamp
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        new_blob_name = f"{folder_name}/reviewed_file_{timestamp}.csv"
+        
+        blob_client = blob_service_client.get_blob_client(container_name, new_blob_name)
         output = io.StringIO()
         data.to_csv(output, index=False)
         output.seek(0)
-        blob_client.upload_blob(output.read(), overwrite=True)
+        blob_client.upload_blob(output.read(), overwrite=False)
     except Exception as e:
         st.write(f"Error occurred: {e}")
 
@@ -137,7 +139,7 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Route"] = row['Route']
                 
                 # Save the updated data back to the blob in the ReviewedFiles folder
-                upload_blob_data('data1', latest_blob.name, data, folder_name="ReviewedFiles")
+                upload_blob_data('data1', data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
 
     else:
