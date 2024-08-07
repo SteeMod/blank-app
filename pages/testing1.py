@@ -67,19 +67,18 @@ with st.form("Review"):
             MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
             MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
             
-            editable_data = {
-                'Field': ['Med1Check', 'Med1Name', 'Med1Dosage', 'Med1Frequency', 'Med1Form', 'Med1Route',
-                        'Med2Check', 'Med2Name', 'Med2Dosage', 'Med2Frequency', 'Med2Form', 'Med2Route',
-                        'Med3Check', 'Med3Name', 'Med3Dosage', 'Med3Frequency', 'Med3Form', 'Med3Route',
-                        'Med4Check', 'Med4Name', 'Med4Dosage', 'Med4Frequency', 'Med4Form', 'Med4Route'],
-                'Value': [str(row_data.get('Med1Check', '')), str(row_data.get('Med1Name', '')), str(row_data.get('Med1Dosage', '')), str(row_data.get('Med1Frequency', '')), str(row_data.get('Med1Form', '')), str(row_data.get('Med1Route', '')),
-                        str(row_data.get('Med2Check', '')), str(row_data.get('Med2Name', '')), str(row_data.get('Med2Dosage', '')), str(row_data.get('Med2Frequency', '')), str(row_data.get('Med2Form', '')), str(row_data.get('Med2Route', '')),
-                        str(row_data.get('Med3Check', '')), str(row_data.get('Med3Name', '')), str(row_data.get('Med3Dosage', '')), str(row_data.get('Med3Frequency', '')), str(row_data.get('Med3Form', '')), str(row_data.get('Med3Route', '')),
-                        str(row_data.get('Med4Check', '')), str(row_data.get('Med4Name', '')), str(row_data.get('Med4Dosage', '')), str(row_data.get('Med4Frequency', '')), str(row_data.get('Med4Form', '')), str(row_data.get('Med4Route', ''))]
+            treatment_plan_data = {
+                'MedCheck': [str(row_data.get(f"Med{i}Check", '')) for i in range(1, 5)],
+                'MedName': [str(row_data.get(f"Med{i}Name", '')) for i in range(1, 5)],
+                'DayDosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 5)],
+                'DayFreq': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
+                'DayForm': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 5)],
+                'DayRoute': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 5)],
+                'DayInstruction': [str(row_data.get(f"Day{i}Instruction", '')) for i in range(1, 5)]
             }
+            treatment_plan_df = pd.DataFrame(treatment_plan_data)
+            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
-            editable_df = pd.DataFrame(editable_data)
-            edited_df = st.data_editor(editable_df)
             # Treatment Plan table
             treatment_plan_data = {
                 'Day': [f"Day{i}" for i in range(1, 32)],
@@ -96,9 +95,6 @@ with st.form("Review"):
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 # Update the row_data with edited values
-                for index, row in edited_df.iterrows():
-                    row_data[row['Field']] = row['Value']
-                
                 for index, row in edited_treatment_plan_df.iterrows():
                     row_data[f"Day{index+1}Yes"] = row['Yes']
                     row_data[f"Day{index+1}No"] = row['No']
