@@ -56,7 +56,7 @@ with st.form("Review"):
             reshaped_df = pd.DataFrame(reshaped_data, columns=['Day', 'Yes', 'No', 'Dosage', 'Freq', 'Form', 'Route'])
 
             # Display the reshaped DataFrame in an editable table
-            edited_data = st.experimental_data_editor(reshaped_df, num_rows="dynamic")
+            edited_data = st._data_editor(reshaped_df, num_rows="dynamic")
 
             # Submit button
             submitted = st.form_submit_button("Submit")
