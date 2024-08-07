@@ -81,18 +81,6 @@ with st.form("Review"):
             editable_df = pd.DataFrame(editable_data)
             edited_df = st.data_editor(editable_df)
 
-            # Treatment Plan table
-            day_fields = [f"Day{i}" for i in range(1, 32)]
-            day_table = [["" for _ in range(7)] for _ in range(31)]
-            for i, day in enumerate(day_fields):
-                day_table[i][0] = st.text_input(day, value=str(row_data.get(day, '')))
-                day_table[i][1] = st.text_input(f"yes_{i+1}", value=str(row_data.get(f"Day{i+1}yes", '')))
-                day_table[i][2] = st.text_input(f"No_{i+1}", value=str(row_data.get(f"Day{i+1}No", '')))
-                day_table[i][3] = st.text_input(f"Dosage_{i+1}", value=str(row_data.get(f"Day{i+1}Dosage", '')))
-                day_table[i][4] = st.text_input(f"Frequency_{i+1}", value=str(row_data.get(f"Day{i+1}Freq", '')))
-                day_table[i][5] = st.text_input(f"Form_{i+1}", value=str(row_data.get(f"Day{i+1}Form", '')))
-                day_table[i][6] = st.text_input(f"Route_{i+1}", value=str(row_data.get(f"Day{i+1}Route", '')))
-
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 # Update the row_data with edited values
@@ -105,4 +93,3 @@ with st.form("Review"):
 
     else:
         st.write("No files found in the specified container.")
-
