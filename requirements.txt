@@ -33,7 +33,6 @@ oauthlib==3.2.0
 openai==0.11.0
 packaging==21.3
 pandas==1.4.1
-pdfminersix==20211012
 pdfplumber==0.6.0
 pillow==9.0.1
 pip==22.0.3
