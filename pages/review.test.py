@@ -5,9 +5,10 @@ import io
 import datetime
 from io import BytesIO
 from streamlit_pdf_viewer import pdf_viewer
+import os
 
-# Azure Blob Storage connection details
-connection_string = st.secrets["azure"]["connection_string"]
+# Azure Blob Storage connection details from environment variables
+connection_string = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 container_name = "data1"
 folder_name = "RawFiles"
 
