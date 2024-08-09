@@ -18,6 +18,5 @@ python-dotenv==0.19.2
 
 streamlit==1.6.0
 streamlit-aggrid==0.2.3
-streamlit-pdf-viewer==0.1.0
 
 toml==0.10.2
