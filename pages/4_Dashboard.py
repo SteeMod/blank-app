@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-import matplotlib.pyplot as plt
+import plotly.express as px
 from io import BytesIO
 from azure.storage.blob import BlobServiceClient
 import os
@@ -44,10 +44,8 @@ try:
     # Count the rows where 'Yes' is either ':selected:' or ':unselected:'
     denominator = df[(df['Yes'] == ':selected:') | (df['Yes'] == ':unselected:')].shape[0]
 
-    # Create a pie chart
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.pie([numerator, denominator - numerator], labels=['Selected', 'Unselected'], autopct='%1.1f%%')
-    ax.set_title('Your Statistics')
+    # Create a pie chart using Plotly
+    fig = px.pie(values=[numerator, denominator - numerator], names=['Selected', 'Unselected'], title='Your Statistics')
 
     # Create two columns
     col1, col2 = st.columns(2)
@@ -56,7 +54,7 @@ try:
     with col1:
         st.dataframe(df)
     with col2:
-        st.pyplot(fig)
+        st.plotly_chart(fig)
 
 except Exception as ex:
     st.error(f'Exception: {ex}')
