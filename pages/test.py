@@ -62,11 +62,9 @@ def process_uploaded_file(uploaded_file):
         pdf_blob_client.upload_blob(uploaded_file, overwrite=True)
         logging.info(f"PDF file '{timestamped_blob_name}' uploaded successfully.")
 
-        # Download the blob to a stream
-        downloaded_blob = pdf_blob_client.download_blob().readall()
-
-        # Analyze the document from the blob
-        poller = client.begin_analyze_document(model_id=model_id, document=downloaded_blob)
+        # Analyze the document from the uploaded file
+        uploaded_file.seek(0)
+        poller = client.begin_analyze_document(model_id=model_id, document=uploaded_file.read())
         result = poller.result()
         if not result.documents:
             raise Exception("Expected at least one document in the result.")
