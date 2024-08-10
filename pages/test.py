@@ -1,65 +1,96 @@
 import streamlit as st
-import os
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
-import pandas as pd
+from azure.storage.blob import BlobServiceClient
+from csv import DictWriter
+import logging
+import os
 
-# Load environment variables
-AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-AZURE_FORM_RECOGNIZER_ENDPOINT = os.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT")
-AZURE_FORM_RECOGNIZER_KEY = os.getenv("AZURE_FORM_RECOGNIZER_KEY")
+st.title("Upload Completed Form")
 
-# Azure Blob Storage credentials
-blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
-container_name = "your-container-name"
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
-# Azure AI Document Intelligence credentials
-endpoint = AZURE_FORM_RECOGNIZER_ENDPOINT
-key = AZURE_FORM_RECOGNIZER_KEY
+def main(uploaded_file):
+    try:
+        endpoint = os.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT")
+        credential = AzureKeyCredential(os.getenv("AZURE_FORM_RECOGNIZER_KEY"))
+        client = DocumentAnalysisClient(endpoint, credential)
 
-UPLOAD_FOLDER = 'CookedFiles'
+        model_id = "Thessa5vs6"
 
-# Ensure the upload folder exists
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+        # Create BlobServiceClient
+        blob_service_client = BlobServiceClient.from_connection_string(os.getenv("AZURE_STORAGE_CONNECTION_STRING"))
+        container_client = blob_service_client.get_container_client("data1")
 
-def list_blobs():
-    container_client = blob_service_client.get_container_client(container_name)
-    blob_list = container_client.list_blobs()
-    return [blob.name for blob in blob_list]
+        # Generate a timestamped filename
+        original_blob_name = uploaded_file.name
+        file_extension = os.path.splitext(original_blob_name)[1]
+        timestamped_blob_name = f"RawFiles/{original_blob_name}"
 
-def download_blob(blob_name):
-    blob_client = blob_service_client.get_blob_client(container_name, blob_name)
-    download_file_path = os.path.join(UPLOAD_FOLDER, blob_name)
-    with open(download_file_path, "wb") as download_file:
-        download_file.write(blob_client.download_blob().readall())
-    return download_file_path
+        # Create a new blob client for the PDF file
+        pdf_blob_client = container_client.get_blob_client(timestamped_blob_name)
+        # Upload the PDF to Azure Blob Storage
+        pdf_blob_client.upload_blob(uploaded_file, overwrite=True)
+        logging.info(f"PDF file '{timestamped_blob_name}' uploaded successfully.")
 
-def process_file(file_path):
-    client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
-    with open(file_path, "rb") as f:
-        poller = client.begin_analyze_document("prebuilt-document", document=f)
-    result = poller.result()
-    
-    # Process the result and save as CSV
-    data = []
-    for page in result.pages:
-        for table in page.tables:
-            for cell in table.cells:
-                data.append([cell.content, cell.row_index, cell.column_index])
-    df = pd.DataFrame(data, columns=["Content", "Row", "Column"])
-    output_path = os.path.join(UPLOAD_FOLDER, "out1.csv")
-    df.to_csv(output_path, index=False)
+        # Download the blob to a stream
+        downloaded_blob = pdf_blob_client.download_blob().readall()
 
-st.title("File Upload and Processing")
+        # Analyze the document from the blob
+        poller = client.begin_analyze_document(model_id=model_id, document=downloaded_blob)
+        result = poller.result()
+        if not result.documents:
+            raise Exception("Expected at least one document in the result.")
+        document = result.documents[0]
 
-blob_files = list_blobs()
-selected_file = st.selectbox("Choose a file from Azure Blob Storage", blob_files)
+        # Create a CSV writer
+        csv_filename = 'out1.csv'
+        with open(csv_filename, mode='w', newline='', encoding='utf-8') as csvfile:
+            fieldnames = [name for name in document.fields.keys()]
+            writer = DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
 
-if st.button("Download and Process"):
-    if selected_file:
-        file_path = download_blob(selected_file)
-        st.success(f"Downloaded file: {selected_file}")
-        process_file(file_path)
-        st.success("File processed and saved as out1.csv in CookedFiles folder")
+            # Transform document.fields into a format suitable for csv-writer
+            record = {}
+            for key, field in document.fields.items():
+                if field.value_type == 'dictionary' and field.value and 'rows' in field.value:
+                    # Check if the object is a table
+                    if isinstance(field.value['rows'], list):
+                        # Handle table data
+                        for rowIndex, row in enumerate(field.value['rows']):
+                            if row and isinstance(row, list):
+                                for cellIndex, cell in enumerate(row):
+                                    record[f"{key}_row{rowIndex}_cell{cellIndex}"] = cell.content
+                else:
+                    # Handle regular fields
+                    record[key] = field.content if field.content else field.value
+            writer.writerow(record)
+
+        # Create a new blob client for the CSV file
+        csv_blob_name = f"CookedFiles/{csv_filename}"
+        csv_blob_client = container_client.get_blob_client(csv_blob_name)
+        # Upload the CSV file to Azure Blob Storage
+        with open(csv_filename, 'rb') as data:
+            csv_blob_client.upload_blob(data, overwrite=True)
+        logging.info(f"CSV file '{csv_blob_name}' uploaded successfully.")
+        
+        # Display success message
+        st.success("File uploaded successfully!")
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        st.error(f"An error occurred: {e}")
+
+if __name__ == '__main__':
+    uploaded_file = st.file_uploader("Choose a file", type=['pdf'])
+    if uploaded_file is not None:
+        st.download_button(
+            label="View File",
+            data=uploaded_file,
+            file_name=uploaded_file.name,
+            mime='application/pdf'
+        )
+        submit_button = st.button('Submit')
+        if submit_button:
+            main(uploaded_file)
