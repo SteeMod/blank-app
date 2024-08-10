@@ -5,13 +5,18 @@ from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
 import pandas as pd
 
+# Load environment variables
+AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+AZURE_FORM_RECOGNIZER_ENDPOINT = os.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT")
+AZURE_FORM_RECOGNIZER_KEY = os.getenv("AZURE_FORM_RECOGNIZER_KEY")
+
 # Azure Blob Storage credentials
-blob_service_client = BlobServiceClient.from_connection_string("YOUR_AZURE_STORAGE_CONNECTION_STRING")
+blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
 container_name = "your-container-name"
 
 # Azure AI Document Intelligence credentials
-endpoint = "YOUR_AZURE_ENDPOINT"
-key = "YOUR_AZURE_KEY"
+endpoint = AZURE_FORM_RECOGNIZER_ENDPOINT
+key = AZURE_FORM_RECOGNIZER_KEY
 
 UPLOAD_FOLDER = 'CookedFiles'
 
