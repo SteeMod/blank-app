@@ -3,3 +3,4 @@ azure-storage-blob
 streamlit-pdf-viewer
 pillow
 azure-ai-formrecognizer
+plotly
