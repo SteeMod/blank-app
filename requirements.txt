@@ -4,3 +4,4 @@ streamlit-pdf-viewer
 pillow
 azure-ai-formrecognizer
 plotly
+pandas
