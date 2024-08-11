@@ -142,6 +142,7 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Route"] = row['Route']
                 
                 # Save the updated data back to the blob in the ReviewedFiles folder
+                data.iloc[0] = row_data  # Update the DataFrame with the edited row_data
                 upload_blob_data(container_name, data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
 
