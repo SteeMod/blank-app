@@ -28,10 +28,10 @@ try:
 
     # Get the names of the blobs (files) in the container
     # Only select files with prefix 'form_'
-    file_list = [blob.name for blob in blob_list if blob.name.startswith('form_')]
+    file_list = [blob.name for blob in blob_list if blob.name.startswith('pre_')]
 
     if not file_list:
-        st.warning("No files found with the prefix 'form_'.")
+        st.warning("No files found with the prefix 'pre_'.")
         st.stop()
 
     # Create a dropdown list for the user to select a file
