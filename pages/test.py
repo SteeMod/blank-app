@@ -36,6 +36,12 @@ def display_pdf(pdf_data, selected_file):
         tmp_file.write(pdf_data.getbuffer())
         tmp_file_path = tmp_file.name
     pdf_viewer(tmp_file_path)
+    st.download_button(
+        label="Download PDF",
+        data=pdf_data,
+        file_name=selected_file,
+        mime="application/pdf"
+    )
 
 # Function to process uploaded file
 def process_uploaded_file(uploaded_file):
@@ -112,7 +118,7 @@ def main():
 
         # File uploader
         uploaded_file = st.file_uploader("Choose a file", type=['pdf'])
-        submit_button = st.button('Upload')
+        submit_button = st.button('Submit')
         if uploaded_file is not None and submit_button:
             process_uploaded_file(uploaded_file)
 
