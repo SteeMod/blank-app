@@ -51,16 +51,8 @@ def process_uploaded_file(uploaded_file):
         client = DocumentAnalysisClient(endpoint, credential)
         model_id = "Thessa5vs6"
 
-        # Generate a timestamped filename
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        original_blob_name = uploaded_file.name
-        file_extension = os.path.splitext(original_blob_name)[1]
-        timestamped_blob_name = f"RawFiles/{timestamp}{file_extension}"
 
-        # Create a new blob client for the PDF file
-        pdf_blob_client = blob_service_client.get_blob_client(container_name, timestamped_blob_name)
-        pdf_blob_client.upload_blob(uploaded_file, overwrite=True)
-        logging.info(f"PDF file '{timestamped_blob_name}' uploaded successfully.")
+
 
         # Analyze the document from the uploaded file
         uploaded_file.seek(0)
@@ -71,7 +63,7 @@ def process_uploaded_file(uploaded_file):
         document = result.documents[0]
 
         # Create a CSV writer
-        csv_filename = f'result_{timestamp}.csv'
+        csv_filename = f'out1.csv'
         with open(csv_filename, mode='w', newline='', encoding='utf-8') as csvfile:
             fieldnames = [name for name in document.fields.keys()]
             writer = DictWriter(csvfile, fieldnames=fieldnames)
