@@ -118,7 +118,7 @@ with st.form("Review"):
             # Treatment Plan table
             treatment_plan_data = {
                 'Day': [f"Day{i}" for i in range(1, 5)],
-                'yes': [str(row_data.get(f"Day{i}yes", '')) for i in range(1, 5)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 5)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 5)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 5)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
@@ -134,7 +134,7 @@ with st.form("Review"):
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(5, 9)],
                           
                 'Day': [f"Day{i}" for i in range(9, 11)],
-                'yes': [str(row_data.get(f"Day{i}yes", '')) for i in range(9, 11)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(9, 11)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(9, 11)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(9, 11)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(9, 11)],
@@ -142,11 +142,12 @@ with st.form("Review"):
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(9, 11)], 
 
                 'Day': [f"Day{i}" for i in range(11, 32)],
-                'Yes': [str(row_data.get(f"Day{i}yes", '')) for i in range(11, 32)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(11, 3)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(11, 32)],
+                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(11, 32)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(11, 32)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(11, 32)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(11, 32)]         
+                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(11, 32)],
+                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(11, 32)]        
             }
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
