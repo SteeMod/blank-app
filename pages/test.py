@@ -117,14 +117,21 @@ with st.form("Review"):
 
             # Treatment Plan table
             treatment_plan_data = {
-                'Day': [f"Day{i}" for i in range(1, 32)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')).lower() for i in range(1, 32)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
-                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
-                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 32)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 32)],
-                'Instruction': [str(row_data.get(f"Day{i}Instruction", '')) for i in range(1, 32)]
+                'Day': [f"Day{i}" for i in range(1, 5)],
+                'yes': [str(row_data.get(f"Day{i}yes", '')) for i in range(1, 5)],
+                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 5)],
+                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 5)],
+                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
+                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 5)],
+                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 5)],
+                'Day': [f"Day{i}" for i in range(5, 32)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(5, 32)],
+                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(5, 32)],
+                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(5, 32)],
+                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(5, 32)],
+                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(5, 32)],
+                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(5, 32)],
+     
             }
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
@@ -139,8 +146,10 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Freq"] = row['Frequency']
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
+                
+                # Save the updated data back to the blob in the ReviewedFiles folder
+                upload_blob_data(container_name, data, folder_name="ReviewedFiles")
+                st.success("Data updated successfully!")
 
-                            
-            # Save the updated data back to the blob in the ReviewedFiles folder
-            upload_blob_data(container_name, data, folder_name="ReviewedFiles")
-            st.success("Data updated successfully!")
+    else:
+        st.write("No files found in the specified container.")
