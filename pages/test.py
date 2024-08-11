@@ -57,10 +57,10 @@ try:
             model_id = "Thessa5vs6"
 
             # Create a new blob client for the PDF file
-            pdf_blob_client = blob_service_client.get_blob_client(container_name, f"RawFiles/{uploaded_file.name}")
+            pdf_blob_client = blob_service_client.get_blob_client(container_name, f"RawFiles/{selected_file}")
             # Upload the PDF to Azure Blob Storage
             pdf_blob_client.upload_blob(uploaded_file, overwrite=True)
-            logging.info(f"PDF file '{uploaded_file.name}' uploaded successfully.")
+            logging.info(f"PDF file '{selected_file}' uploaded successfully.")
 
             # Download the blob to a stream
             downloaded_blob = pdf_blob_client.download_blob().readall()
