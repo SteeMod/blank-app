@@ -116,23 +116,17 @@ with st.form("Review"):
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
             # Treatment Plan table
-            treatment_plan_data = {    
-                'Day': [f"Day{1}" ],
-                'yes': [str(row_data.get(f"Day{1}yes", '')) ],
-                'No': [str(row_data.get(f"Day{1}No", '')) ],
-                'Dosage': [str(row_data.get(f"Day{1}Dosage", '')) ],
-                'Frequency': [str(row_data.get(f"Day{1}Freq", '')) ],
-                'Form': [str(row_data.get(f"Day{1}Form", '')) ],
-                'Route': [str(row_data.get(f"Day{1}Route", '')) ],
-                'Day': [f"Day{2}" ],
-                'yes': [str(row_data.get(f"Day{2}yes", '')) ],
-                'No': [str(row_data.get(f"Day{2}No", '')) ],
-                'Dosage': [str(row_data.get(f"Day{2}Dosage", '')) ],
-                'Frequency': [str(row_data.get(f"Day{2}Freq", '')) ],
-                'Form': [str(row_data.get(f"Day{2}Form", '')) ],
-                'Route': [str(row_data.get(f"Day{2}Route", '')) ]
-     
+            treatment_plan_data = {
+                'Day': [f"Day{1}", f"Day{2}"],
+                'Yes': [str(row_data.get(f"Day{1}yes", '')), str(row_data.get(f"Day{2}yes", ''))],
+                'No': [str(row_data.get(f"Day{1}No", '')), str(row_data.get(f"Day{2}No", ''))],
+                'Dosage': [str(row_data.get(f"Day{1}Dosage", '')), str(row_data.get(f"Day{2}Dosage", ''))],
+                'Frequency': [str(row_data.get(f"Day{1}Freq", '')), str(row_data.get(f"Day{2}Freq", ''))],
+                'Form': [str(row_data.get(f"Day{1}Form", '')), str(row_data.get(f"Day{2}Form", ''))],
+                'Route': [str(row_data.get(f"Day{1}Route", '')), str(row_data.get(f"Day{2}Route", ''))]
             }
+                
+            
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
