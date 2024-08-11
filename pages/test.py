@@ -123,8 +123,14 @@ with st.form("Review"):
                 'Dosage': [str(row_data.get(f"Day{1}Dosage", '')) ],
                 'Frequency': [str(row_data.get(f"Day{1}Freq", '')) ],
                 'Form': [str(row_data.get(f"Day{1}Form", '')) ],
-                'Route': [str(row_data.get(f"Day{1}Route", '')) ]
-                
+                'Route': [str(row_data.get(f"Day{1}Route", '')) ],
+                'Day': [f"Day{2}" ],
+                'yes': [str(row_data.get(f"Day{2}yes", '')) ],
+                'No': [str(row_data.get(f"Day{2}No", '')) ],
+                'Dosage': [str(row_data.get(f"Day{2}Dosage", '')) ],
+                'Frequency': [str(row_data.get(f"Day{2}Freq", '')) ],
+                'Form': [str(row_data.get(f"Day{2}Form", '')) ],
+                'Route': [str(row_data.get(f"Day{2}Route", '')) ]
      
             }
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
