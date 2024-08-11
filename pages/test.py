@@ -102,64 +102,43 @@ with st.form("Review"):
             MedIntakeName = MedIntakeName.text_input("MEDICATION NAME", value=str(row_data.get('MedIntakeName', '')))
             MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
             MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
-            
-            treatment_plan_data = {
-                'MedCheck': [str(row_data.get(f"Med{i}Check", '')) for i in range(1, 5)],
-                'MedName': [str(row_data.get(f"Med{i}Name", '')) for i in range(1, 5)],
-                'DayDosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 5)],
-                'DayFreq': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
-                'DayForm': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 5)],
-                'DayRoute': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 5)],
-                'DayInstruction': [str(row_data.get(f"Day{i}Instruction", '')) for i in range(1, 5)]
-            }
-            treatment_plan_df = pd.DataFrame(treatment_plan_data)
-            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
+                    
+        treatment_plan_data = {
+            'MedCheck': [str(row_data.get(f"Med{i}Check", '')).lower() for i in range(1, 5)],
+            'MedName': [str(row_data.get(f"Med{i}Name", '')).lower() for i in range(1, 5)],
+            'DayDosage': [str(row_data.get(f"Day{i}Dosage", '')).lower() for i in range(1, 5)],
+            'DayFreq': [str(row_data.get(f"Day{i}Freq", '')).lower() for i in range(1, 5)],
+            'DayForm': [str(row_data.get(f"Day{i}Form", '')).lower() for i in range(1, 5)],
+            'DayRoute': [str(row_data.get(f"Day{i}Route", '')).lower() for i in range(1, 5)],
+            'DayInstruction': [str(row_data.get(f"Day{i}Instruction", '')).lower() for i in range(1, 5)]
+        }
+        treatment_plan_df = pd.DataFrame(treatment_plan_data)
+        edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
-            # Treatment Plan table
-            treatment_plan_data = {
-                'Day': [f"Day{i}" for i in range(1, 5)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 5)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 5)],
-                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 5)],
-                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 5)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 5)],
-                'Instruction': [str(row_data.get(f"Day{i}Instruction", '')) for i in range(1, 5)],     
-                'Day': [f"Day{i}" for i in range(5, 9)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(5, 9)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(5, 9)],
-                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(5, 9)],
-                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(5, 9)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(5, 9)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(5, 9)],
-                'Day': [f"Day{i}" for i in range(9, 11)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(9, 11)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(9, 11)],
-                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(9, 11)],
-                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(9, 11)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(9, 11)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(9, 11)], 
-                'Day': [f"Day{i}" for i in range(11, 32)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(11, 32)],
-                'No': [str(row_data.get(f"Day{i}No", '')) for i in range(11, 32)],
-                'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(11, 32)],
-                'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(11, 32)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(11, 32)],
-                'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(11, 32)]        
-            }
-            treatment_plan_df = pd.DataFrame(treatment_plan_data)
-            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
+        # Treatment Plan table
+        treatment_plan_data = {
+            'Day': [f"Day{i}" for i in range(1, 32)],
+            'Yes': [str(row_data.get(f"Day{i}Yes", '')).lower() for i in range(1, 32)],
+            'No': [str(row_data.get(f"Day{i}No", '')).lower() for i in range(1, 32)],
+            'Dosage': [str(row_data.get(f"Day{i}Dosage", '')).lower() for i in range(1, 32)],
+            'Frequency': [str(row_data.get(f"Day{i}Freq", '')).lower() for i in range(1, 32)],
+            'Form': [str(row_data.get(f"Day{i}Form", '')).lower() for i in range(1, 32)],
+            'Route': [str(row_data.get(f"Day{i}Route", '')).lower() for i in range(1, 32)]
+        }
+        treatment_plan_df = pd.DataFrame(treatment_plan_data)
+        edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
-            submit_button = st.form_submit_button("Submit")
-            if submit_button:
-                # Update the row_data with edited values
-                for index, row in edited_treatment_plan_df.iterrows():
-                    row_data[f"Day{index+1}Yes"] = row['Yes']
-                    row_data[f"Day{index+1}No"] = row['No']
-                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
-                    row_data[f"Day{index+1}Freq"] = row['Frequency']
-                    row_data[f"Day{index+1}Form"] = row['Form']
-                    row_data[f"Day{index+1}Route"] = row['Route']
+        submit_button = st.form_submit_button("Submit")
+        if submit_button:
+            # Update the row_data with edited values
+            for index, row in edited_treatment_plan_df.iterrows():
+                row_data[f"Day{index+1}Yes"] = row['Yes']
+                row_data[f"Day{index+1}No"] = row['No']
+                row_data[f"Day{index+1}Dosage"] = row['Dosage']
+                row_data[f"Day{index+1}Freq"] = row['Frequency']
+                row_data[f"Day{index+1}Form"] = row['Form']
+                row_data[f"Day{index+1}Route"] = row['Route']
+
                 
                 # Save the updated data back to the blob in the ReviewedFiles folder
                 upload_blob_data(container_name, data, folder_name="ReviewedFiles")
