@@ -96,7 +96,7 @@ try:
                 writer.writerow(record)
 
             # Create a new blob client for the CSV file
-            csv_blob_name = f"CookedFiles/8/8/24.csv"
+            csv_blob_name = f"CookedFiles/8_8_24.csv"
             csv_blob_client = blob_service_client.get_blob_client(container_name, csv_blob_name)
             # Upload the CSV file to Azure Blob Storage
             with open(csv_filename, 'rb') as data:
