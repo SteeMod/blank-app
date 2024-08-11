@@ -132,14 +132,6 @@ with st.form("Review"):
 
             submit_button = st.form_submit_button("Submit")
             if submit_button:
-                # Update the row_data with edited values
-                for index, row in edited_treatment_plan_df.iterrows():
-                    row_data[f"Day{index+1}Yes"] = row['Yes']
-                    row_data[f"Day{index+1}No"] = row['No']
-                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
-                    row_data[f"Day{index+1}Freq"] = row['Frequency']
-                    row_data[f"Day{index+1}Form"] = row['Form']
-                    row_data[f"Day{index+1}Route"] = row['Route']
                 
                 # Save the updated data back to the blob in the ReviewedFiles folder
                 data.iloc[0] = row_data  # Update the DataFrame with the edited row_data
