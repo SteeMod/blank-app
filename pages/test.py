@@ -3,7 +3,6 @@ from azure.storage.blob import BlobServiceClient
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
 from csv import DictWriter
-from datetime import datetime
 import io
 import tempfile
 from streamlit_pdf_viewer import pdf_viewer
@@ -44,17 +43,6 @@ def process_uploaded_file(uploaded_file):
         credential = AzureKeyCredential(os.getenv("AZURE_FORM_RECOGNIZER_KEY"))
         client = DocumentAnalysisClient(endpoint, credential)
         model_id = "Thessa5vs6"
-
-        # Generate a timestamped filename
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        original_blob_name = uploaded_file.name
-        file_extension = os.path.splitext(original_blob_name)[1]
-        timestamped_blob_name = f"RawFiles/{timestamp}{file_extension}"
-
-        # Create a new blob client for the PDF file
-        pdf_blob_client = blob_service_client.get_blob_client(container_name, timestamped_blob_name)
-        pdf_blob_client.upload_blob(uploaded_file, overwrite=True)
-        logging.info(f"PDF file '{timestamped_blob_name}' uploaded successfully.")
 
         # Analyze the document from the uploaded file
         uploaded_file.seek(0)
