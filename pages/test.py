@@ -124,7 +124,7 @@ with st.form("Review"):
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
                 'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 5)],
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 5)],
-                          
+                'Instruction': [str(row_data.get(f"Day{i}Instruction", '')) for i in range(1, 5)],     
                 'Day': [f"Day{i}" for i in range(5, 9)],
                 'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(5, 9)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(5, 9)],
@@ -132,7 +132,6 @@ with st.form("Review"):
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(5, 9)],
                 'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(5, 9)],
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(5, 9)],
-                          
                 'Day': [f"Day{i}" for i in range(9, 11)],
                 'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(9, 11)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(9, 11)],
@@ -140,7 +139,6 @@ with st.form("Review"):
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(9, 11)],
                 'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(9, 11)],
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(9, 11)], 
-
                 'Day': [f"Day{i}" for i in range(11, 32)],
                 'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(11, 32)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(11, 32)],
