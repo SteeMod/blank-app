@@ -146,7 +146,6 @@ with st.form("Review"):
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(11, 3)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(11, 32)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(11, 32)],
-                'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(11, 32)],
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(11, 32)]         
             }
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
