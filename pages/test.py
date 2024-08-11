@@ -73,7 +73,7 @@ try:
             document = result.documents[0]
 
             # Create a CSV writer
-            csv_filename = '8/8/24.csv'
+            csv_filename = '8_8_24.csv'
             with open(csv_filename, mode='w', newline='', encoding='utf-8') as csvfile:
                 fieldnames = [name for name in document.fields.keys()]
                 writer = DictWriter(csvfile, fieldnames=fieldnames)
