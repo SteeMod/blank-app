@@ -18,7 +18,7 @@ container_client = blob_service_client.get_container_client(container_name)
 
 # Get the latest file from the folder
 blobs = container_client.list_blobs(name_starts_with=folder_name)
-latest_blob = max(blobs, key=lambda b: b.creation_time)
+latest_blob = max(blobs, key=lambda b: b.last_modified)
 
 # Download the latest file
 blob_client = container_client.get_blob_client(latest_blob.name)
@@ -79,9 +79,11 @@ def upload_blob_data(container_name, data, folder_name="ReviewedFiles"):
 with st.form("Review"):
     latest_blob = get_latest_blob(container_name, 'CookedFiles/')
     if latest_blob is not None:
-        data = download_blob_data(latest_blob)
-        if data is not None:
-            row_data = data.iloc[0]  # assuming you want to display the first row
+        if 'data' not in st.session_state:
+            st.session_state.data = download_blob_data(latest_blob)
+        
+        if st.session_state.data is not None:
+            row_data = st.session_state.data.iloc[0]  # assuming you want to display the first row
 
             col1, col2 = st.columns(2)
             FirstName = col1.text_input("FirstName", value=str(row_data.get('FirstName', '')))
@@ -106,11 +108,11 @@ with st.form("Review"):
             treatment_plan_data = {
                 'MedCheck': [str(row_data.get(f"Med{i}Check", '')) for i in range(1, 5)],
                 'MedName': [str(row_data.get(f"Med{i}Name", '')) for i in range(1, 5)],
-                'DayDosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 5)],
-                'DayFreq': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 5)],
-                'DayForm': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 5)],
-                'DayRoute': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 5)],
-                'DayInstruction': [str(row_data.get(f"Day{i}Instruction", '')) for i in range(1, 5)]
+                'MedDosage': [str(row_data.get(f"Med{i}Dosage", '')) for i in range(1, 5)],
+                'MedFreq': [str(row_data.get(f"Med{i}Freq", '')) for i in range(1, 5)],
+                'MedForm': [str(row_data.get(f"Med{i}Form", '')) for i in range(1, 5)],
+                'MedRoute': [str(row_data.get(f"Med{i}Route", '')) for i in range(1, 5)],
+                'MedInstruction': [str(row_data.get(f"Med{i}Instruction", '')) for i in range(1, 5)]
             }
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
@@ -130,18 +132,25 @@ with st.form("Review"):
 
             submit_button = st.form_submit_button("Submit")
             if submit_button:
-                # Update the row_data with edited values
-                for index, row in edited_treatment_plan_df.iterrows():
-                    row_data[f"Day{index+1}Yes"] = row['Yes']
-                    row_data[f"Day{index+1}No"] = row['No']
-                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
-                    row_data[f"Day{index+1}Freq"] = row['Frequency']
-                    row_data[f"Day{index+1}Form"] = row['Form']
-                    row_data[f"Day{index+1}Route"] = row['Route']
-                
-                # Save the updated data back to the blob in the ReviewedFiles folder
-                upload_blob_data(container_name, data, folder_name="ReviewedFiles")
-                st.success("Data updated successfully!")
+                try:
+                    # Ensure the lengths match before updating
+                    if len(edited_treatment_plan_df.columns) == len(treatment_plan_df.columns):
+                        # Update only the necessary columns
+                        for index, row in edited_treatment_plan_df.iterrows():
+                            st.session_state.data.at[0, f"Day{index+1}Yes"] = row['Yes']
+                            st.session_state.data.at[0, f"Day{index+1}No"] = row['No']
+                            st.session_state.data.at[0, f"Day{index+1}Dosage"] = row['Dosage']
+                            st.session_state.data.at[0, f"Day{index+1}Freq"] = row['Frequency']
+                            st.session_state.data.at[0, f"Day{index+1}Form"] = row['Form']
+                            st.session_state.data.at[0, f"Day{index+1}Route"] = row['Route']
+
+                        # Save the updated data back to the blob in the ReviewedFiles folder
+                        upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
+                        st.success("Data updated successfully!")
+                    else:
+                        st.error("Mismatch in the number of columns between the edited data and the original data.")
+                except Exception as e:
+                    st.error(f"Error updating data: {e}")
 
     else:
         st.write("No files found in the specified container.")
