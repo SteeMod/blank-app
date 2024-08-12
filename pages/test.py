@@ -120,7 +120,7 @@ with st.form("Review"):
             # Treatment Plan table
             treatment_plan_data = {
                 'Day': [f"Day{i}" for i in range(1, 32)],
-                'Yes': [str(row_data.get(f"Day{i}Yes".casefold(), '')) for i in range(1, 32)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 32)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
@@ -154,3 +154,12 @@ with st.form("Review"):
 
     else:
         st.write("No files found in the specified container.")
+
+
+def get_case_insensitive_key(dictionary, key):
+    for k in dictionary.keys():
+        if k.lower() == key.lower():
+            return dictionary[k]
+    return None
+
+'Yes': [str(get_case_insensitive_key(row_data, f"Day{i}Yes")) for i in range(1, 32)],
