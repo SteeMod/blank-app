@@ -117,16 +117,23 @@ with st.form("Review"):
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
-            # Treatment Plan table
+            def get_case_insensitive_key(dictionary, key):
+                for k in dictionary.keys():
+                    if k.lower() == key.lower():
+                        return dictionary[k]
+                return None
+
             treatment_plan_data = {
                 'Day': [f"Day{i}" for i in range(1, 32)],
-                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 32)],
+                'Yes': [str(get_case_insensitive_key(row_data, f"Day{i}Yes")) for i in range(1, 32)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
                 'Form': [str(row_data.get(f"Day{i}Form", '')) for i in range(1, 32)],
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 32)]
             }
+
+            
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
@@ -154,3 +161,4 @@ with st.form("Review"):
 
     else:
         st.write("No files found in the specified container.")
+
