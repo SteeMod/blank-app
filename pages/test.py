@@ -141,12 +141,12 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
 
+                # Update the session state data
+                st.session_state.data.iloc[0] = row_data
+
                 # Save the updated data back to the blob in the ReviewedFiles folder
                 upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
 
     else:
         st.write("No files found in the specified container.")
-
-#praise ye the LORD my GOD
-#For I know the plans I have for you,” declares the LORD, “plans to prosper you and not to harm you, plans to give you hope and a future.
