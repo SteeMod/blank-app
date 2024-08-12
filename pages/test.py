@@ -131,19 +131,6 @@ with st.form("Review"):
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 # Update the row_data with edited values
-                row_data['FirstName'] = FirstName
-                row_data['LastName'] = LastName
-                row_data['Address'] = Address
-                row_data['City'] = City
-                row_data['State'] = State
-                row_data['ZipCode'] = ZipCode
-                row_data['Phone'] = Phone
-                row_data['Allergy1'] = Allergy1
-                row_data['Allergy2'] = Allergy2
-                row_data['MedIntakeName'] = MedIntakeName
-                row_data['MedIntakeMonth'] = MedIntakeMonth
-                row_data['MedIntakeYear'] = MedIntakeYear
-
                 for index, row in edited_treatment_plan_df.iterrows():
                     row_data[f"Day{index+1}Yes"] = row['Yes']
                     row_data[f"Day{index+1}No"] = row['No']
@@ -151,6 +138,13 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Freq"] = row['Frequency']
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
+                    
+
+
+                    
+                
+
+
 
                 # Save the updated data back to the blob in the ReviewedFiles folder
                 upload_blob_data(container_name, data, folder_name="ReviewedFiles")
