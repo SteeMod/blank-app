@@ -79,9 +79,11 @@ def upload_blob_data(container_name, data, folder_name="ReviewedFiles"):
 with st.form("Review"):
     latest_blob = get_latest_blob(container_name, 'CookedFiles/')
     if latest_blob is not None:
-        data = download_blob_data(latest_blob)
-        if data is not None:
-            row_data = data.iloc[0]  # assuming you want to display the first row
+        if 'data' not in st.session_state:
+            st.session_state.data = download_blob_data(latest_blob)
+        
+        if st.session_state.data is not None:
+            row_data = st.session_state.data.iloc[0]  # assuming you want to display the first row
 
             col1, col2 = st.columns(2)
             FirstName = col1.text_input("FirstName", value=str(row_data.get('FirstName', '')))
@@ -138,17 +140,13 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Freq"] = row['Frequency']
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
-                    
-
-
-                    
-                
-
-
 
                 # Save the updated data back to the blob in the ReviewedFiles folder
-                upload_blob_data(container_name, data, folder_name="ReviewedFiles")
+                upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
 
     else:
         st.write("No files found in the specified container.")
+
+#praise ye the LORD my GOD
+#For I know the plans I have for you,” declares the LORD, “plans to prosper you and not to harm you, plans to give you hope and a future.
