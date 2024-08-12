@@ -116,9 +116,9 @@ with st.form("Review"):
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
             # Treatment Plan table
-            treatment_plan_data = {
+            treatment_plan_table_data = {
                 'Day': [f"Day{1}", f"Day{2}"],
-                'Yes': [str(row_data.get(f"Day{1}yes", '')), str(row_data.get(f"Day{2}yes", ''))],
+                'Yes': [str(row_data.get(f"Day{1}Yes", '')), str(row_data.get(f"Day{2}Yes", ''))],
                 'No': [str(row_data.get(f"Day{1}No", '')), str(row_data.get(f"Day{2}No", ''))],
                 'Dosage': [str(row_data.get(f"Day{1}Dosage", '')), str(row_data.get(f"Day{2}Dosage", ''))],
                 'Frequency': [str(row_data.get(f"Day{1}Freq", '')), str(row_data.get(f"Day{2}Freq", ''))],
@@ -126,15 +126,43 @@ with st.form("Review"):
                 'Route': [str(row_data.get(f"Day{1}Route", '')), str(row_data.get(f"Day{2}Route", ''))]
             }
                 
-            
-            treatment_plan_df = pd.DataFrame(treatment_plan_data)
-            edited_treatment_plan_df = st.data_editor(treatment_plan_df)
+            treatment_plan_table_df = pd.DataFrame(treatment_plan_table_data)
+            edited_treatment_plan_table_df = st.data_editor(treatment_plan_table_df)
 
             submit_button = st.form_submit_button("Submit")
             if submit_button:
+                # Update the row_data with edited values
+                row_data['FirstName'] = FirstName
+                row_data['LastName'] = LastName
+                row_data['Address'] = Address
+                row_data['City'] = City
+                row_data['State'] = State
+                row_data['ZipCode'] = ZipCode
+                row_data['Phone'] = Phone
+                row_data['Allergy1'] = Allergy1
+                row_data['Allergy2'] = Allergy2
+                row_data['MedIntakeName'] = MedIntakeName
+                row_data['MedIntakeMonth'] = MedIntakeMonth
+                row_data['MedIntakeYear'] = MedIntakeYear
+
+                for index, row in edited_treatment_plan_df.iterrows():
+                    row_data[f"Med{index+1}Check"] = row['MedCheck']
+                    row_data[f"Med{index+1}Name"] = row['MedName']
+                    row_data[f"Day{index+1}Dosage"] = row['DayDosage']
+                    row_data[f"Day{index+1}Freq"] = row['DayFreq']
+                    row_data[f"Day{index+1}Form"] = row['DayForm']
+                    row_data[f"Day{index+1}Route"] = row['DayRoute']
+                    row_data[f"Day{index+1}Instruction"] = row['DayInstruction']
+
+                for index, row in edited_treatment_plan_table_df.iterrows():
+                    row_data[f"Day{index+1}Yes"] = row['Yes']
+                    row_data[f"Day{index+1}No"] = row['No']
+                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
+                    row_data[f"Day{index+1}Freq"] = row['Frequency']
+                    row_data[f"Day{index+1}Form"] = row['Form']
+                    row_data[f"Day{index+1}Route"] = row['Route']
                 
                 # Save the updated data back to the blob in the ReviewedFiles folder
-                data.iloc[0] = row_data  # Update the DataFrame with the edited row_data
                 upload_blob_data(container_name, data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
 
