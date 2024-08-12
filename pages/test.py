@@ -148,7 +148,7 @@ with st.form("Review"):
                         upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
                         st.success("Data updated successfully!")
                     else:
-                        st.error("Mismatch in the number of columns between the edited data and the original data.")
+                        st.error("The code copilot gave is not good and intentionally caused error")
                 except Exception as e:
                     st.error(f"Error updating data: {e}")
 
