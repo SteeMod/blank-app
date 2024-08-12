@@ -18,7 +18,7 @@ container_client = blob_service_client.get_container_client(container_name)
 
 # Get the latest file from the folder
 blobs = container_client.list_blobs(name_starts_with=folder_name)
-latest_blob = max(blobs, key=lambda b: b.creation_time)
+latest_blob = max(blobs, key=lambda b: b.last_modified)
 
 # Download the latest file
 blob_client = container_client.get_blob_client(latest_blob.name)
