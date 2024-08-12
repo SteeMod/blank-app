@@ -120,7 +120,7 @@ with st.form("Review"):
             # Treatment Plan table
             treatment_plan_data = {
                 'Day': [f"Day{i}" for i in range(1, 32)],
-                'Yes': [str(row_data.get(f"Day{i}Yes".lower(), '')) for i in range(1, 32)],
+                'Yes': [str(row_data.get(f"Day{i}Yes", '')) for i in range(1, 32)],
                 'No': [str(row_data.get(f"Day{i}No", '')) for i in range(1, 32)],
                 'Dosage': [str(row_data.get(f"Day{i}Dosage", '')) for i in range(1, 32)],
                 'Frequency': [str(row_data.get(f"Day{i}Freq", '')) for i in range(1, 32)],
