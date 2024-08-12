@@ -132,21 +132,18 @@ with st.form("Review"):
 
             submit_button = st.form_submit_button("Submit")
             if submit_button:
-                # Update the row_data with edited values
-                for index, row in edited_treatment_plan_df.iterrows():
-                    row_data[f"Day{index+1}Yes"] = row['Yes']
-                    row_data[f"Day{index+1}No"] = row['No']
-                    row_data[f"Day{index+1}Dosage"] = row['Dosage']
-                    row_data[f"Day{index+1}Freq"] = row['Frequency']
-                    row_data[f"Day{index+1}Form"] = row['Form']
-                    row_data[f"Day{index+1}Route"] = row['Route']
+                try:
+                    # Update the session state data with edited values
+                    for index, row in edited_treatment_plan_df.iterrows():
+                        st.session_state.data.at[0, f"Day{index+1}Yes"] = row['Yes']
+                        st.session_state.data.at[0, f"Day{index+1}No"] = row['No']
+                        st.session_state.data.at[0, f"Day{index+1}Dosage"] = row['Dosage']
+                        st.session_state.data.at[0, f"Day{index+1}Freq"] = row['Frequency']
+                        st.session_state.data.at[0, f"Day{index+1}Form"] = row['Form']
+                        st.session_state.data.at[0, f"Day{index+1}Route"] = row['Route']
 
-                # Update the session state data
-                st.session_state.data.iloc[0] = row_data
-
-                # Save the updated data back to the blob in the ReviewedFiles folder
-                upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
-                st.success("Data updated successfully!")
-
-    else:
-        st.write("No files found in the specified container.")
+                    # Save the updated data back to the blob in the ReviewedFiles folder
+                    upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
+                    st.success("Data updated successfully!")
+                except Exception as e:
+                    st.error(f"Error updating")
