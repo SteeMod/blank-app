@@ -133,17 +133,24 @@ with st.form("Review"):
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 try:
-                    # Update the session state data with edited values
-                    for index, row in edited_treatment_plan_df.iterrows():
-                        st.session_state.data.at[0, f"Day{index+1}Yes"] = row['Yes']
-                        st.session_state.data.at[0, f"Day{index+1}No"] = row['No']
-                        st.session_state.data.at[0, f"Day{index+1}Dosage"] = row['Dosage']
-                        st.session_state.data.at[0, f"Day{index+1}Freq"] = row['Frequency']
-                        st.session_state.data.at[0, f"Day{index+1}Form"] = row['Form']
-                        st.session_state.data.at[0, f"Day{index+1}Route"] = row['Route']
+                    # Ensure the lengths match before updating
+                    if len(edited_treatment_plan_df.columns) == len(st.session_state.data.columns):
+                        # Update the session state data with edited values
+                        for index, row in edited_treatment_plan_df.iterrows():
+                            st.session_state.data.at[0, f"Day{index+1}Yes"] = row['Yes']
+                            st.session_state.data.at[0, f"Day{index+1}No"] = row['No']
+                            st.session_state.data.at[0, f"Day{index+1}Dosage"] = row['Dosage']
+                            st.session_state.data.at[0, f"Day{index+1}Freq"] = row['Frequency']
+                            st.session_state.data.at[0, f"Day{index+1}Form"] = row['Form']
+                            st.session_state.data.at[0, f"Day{index+1}Route"] = row['Route']
 
-                    # Save the updated data back to the blob in the ReviewedFiles folder
-                    upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
-                    st.success("Data updated successfully!")
+                        # Save the updated data back to the blob in the ReviewedFiles folder
+                        upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
+                        st.success("Data updated successfully!")
+                    else:
+                        st.error("Mismatch in the number of columns between the edited data and the original data.")
                 except Exception as e:
-                    st.error(f"Error updating")
+                    st.error(f"Error updating data: {e}")
+
+    else:
+        st.write("No files found in the specified container.")
