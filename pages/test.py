@@ -131,6 +131,19 @@ with st.form("Review"):
             submit_button = st.form_submit_button("Submit")
             if submit_button:
                 # Update the row_data with edited values
+                row_data['FirstName'] = FirstName
+                row_data['LastName'] = LastName
+                row_data['Address'] = Address
+                row_data['City'] = City
+                row_data['State'] = State
+                row_data['ZipCode'] = ZipCode
+                row_data['Phone'] = Phone
+                row_data['Allergy1'] = Allergy1
+                row_data['Allergy2'] = Allergy2
+                row_data['MedIntakeName'] = MedIntakeName
+                row_data['MedIntakeMonth'] = MedIntakeMonth
+                row_data['MedIntakeYear'] = MedIntakeYear
+
                 for index, row in edited_treatment_plan_df.iterrows():
                     row_data[f"Day{index+1}Yes"] = row['Yes']
                     row_data[f"Day{index+1}No"] = row['No']
@@ -138,37 +151,10 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Freq"] = row['Frequency']
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
-                    
 
-
-                    
-            col1, col2 = st.columns(2)
-            FirstName = col1.text_input("FirstName", value=str(row_data.get('FirstName', '')))
-            LastName = col2.text_input("LastName", value=str(row_data.get('LastName', '')))
-            Address = st.text_input("Address", value=str(row_data.get('Address', '')))
-            City, State = st.columns(2)
-            City = City.text_input("City", value=str(row_data.get('City', '')))
-            State = State.text_input("State", value=str(row_data.get('State', '')))
-            ZipCode, Phone = st.columns(2)
-            ZipCode = ZipCode.text_input("ZipCode", value=str(row_data.get('ZipCode', '')))
-            Phone = Phone.text_input("Phone", value=str(row_data.get('Phone', '')))
-            Allergy1, Allergy2 = st.columns(2)
-            Allergy1 = Allergy1.text_input("Allergy1", value=str(row_data.get('Allergy1', '')))
-            Allergy2 = Allergy2.text_input("Allergy2", value=str(row_data.get('Allergy2', '')))
-            
-            # Medication details section
-            MedIntakeName, MedIntakeMonth, MedIntakeYear = st.columns(3)
-            MedIntakeName = MedIntakeName.text_input("MEDICATION NAME", value=str(row_data.get('MedIntakeName', '')))
-            MedIntakeMonth = MedIntakeMonth.text_input("MONTH", value=str(row_data.get('MedIntakeMonth', '')))
-            MedIntakeYear = MedIntakeYear.text_input("YEAR", value=str(row_data.get('MedIntakeYear', '')))
-            
-                
-
-
-
-            # Save the updated data back to the blob in the ReviewedFiles folder
-            upload_blob_data(container_name, data, folder_name="ReviewedFiles")
-            st.success("Data updated successfully!")
+                # Save the updated data back to the blob in the ReviewedFiles folder
+                upload_blob_data(container_name, data, folder_name="ReviewedFiles")
+                st.success("Data updated successfully!")
 
     else:
         st.write("No files found in the specified container.")
