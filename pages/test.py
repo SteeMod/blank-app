@@ -135,7 +135,7 @@ with st.form("Review"):
                 try:
                     # Ensure the lengths match before updating
                     if len(edited_treatment_plan_df.columns) == len(st.session_state.data.columns):
-                        # Update the session state data with edited values
+                        # Update only the necessary columns
                         for index, row in edited_treatment_plan_df.iterrows():
                             st.session_state.data.at[0, f"Day{index+1}Yes"] = row['Yes']
                             st.session_state.data.at[0, f"Day{index+1}No"] = row['No']
