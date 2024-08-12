@@ -134,7 +134,7 @@ with st.form("Review"):
             if submit_button:
                 try:
                     # Ensure the lengths match before updating
-                    if len(edited_treatment_plan_df.columns) == len(st.session_state.data.columns):
+                    if len(edited_treatment_plan_df.columns) == len(treatment_plan_df.columns):
                         # Update only the necessary columns
                         for index, row in edited_treatment_plan_df.iterrows():
                             st.session_state.data.at[0, f"Day{index+1}Yes"] = row['Yes']
@@ -148,7 +148,7 @@ with st.form("Review"):
                         upload_blob_data(container_name, st.session_state.data, folder_name="ReviewedFiles")
                         st.success("Data updated successfully!")
                     else:
-                        st.error("The code copilot gave is not good and intentionally caused error")
+                        st.error("Mismatch in the number of columns between the edited data and the original data.")
                 except Exception as e:
                     st.error(f"Error updating data: {e}")
 
