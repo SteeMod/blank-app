@@ -161,7 +161,10 @@ with st.form("Review"):
                     row_data[f"Day{index+1}Freq"] = row['Frequency']
                     row_data[f"Day{index+1}Form"] = row['Form']
                     row_data[f"Day{index+1}Route"] = row['Route']
-                
+
+                # Update the DataFrame with the new row_data
+                data.iloc[0] = row_data
+
                 # Save the updated data back to the blob in the ReviewedFiles folder
                 upload_blob_data(container_name, data, folder_name="ReviewedFiles")
                 st.success("Data updated successfully!")
