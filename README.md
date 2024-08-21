@@ -1,8 +1,5 @@
-# 🎈 Blank app template
-
-A simple Streamlit app template for you to modify!
-
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+# Medtracker
+This streamlit application, designed by Stephen Modimakwane servers as an interface for interacting with trained custom extraction models utilizing tools such as Azure Ai Document Intelligence Studio, the models extract text both handwritten both and typed from paper then it transforms data into a digital format then is stored in Azure Blob Storage
 
 ### How to run it on your own machine
 
