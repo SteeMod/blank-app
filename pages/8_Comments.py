@@ -28,3 +28,13 @@ with st.form(key='Comment'):
             st.success("Comment uploaded successfully!")
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
+# Display the comments
+try:
+    blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+    comments = blob_client.download_blob().readall().decode('utf-8')
+    st.write("### Comments")
+    st.write(comments.replace('\n', '\n\n'))
+except Exception as e:
+    st.error(f"An error occurred while fetching comments: {e}")
