@@ -59,7 +59,8 @@ def download_blob_data(blob):
         df = pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='skip')
         
         # Modify the DataFrame to replace values
-        df = df.replace({':selected:': 'Yes', ':unselected:': 'No', pd.NA: ''})
+        df = df.replace({':selected:': 'Yes', ':unselected:': 'No'})
+        df = df.fillna('')
         return df
     except Exception as e:
         st.write(f"Error occurred: {e}")
