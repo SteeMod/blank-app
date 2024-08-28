@@ -38,11 +38,11 @@ try:
     # Rename the first column to 'Yes'
     df.rename(columns={df.columns[0]: 'Yes'}, inplace=True)
 
-    # Count the rows where 'Yes' is ':selected:'
-    numerator = df[df['Yes'] == ':selected:'].shape[0]
+    # Count the rows where 'Yes' is 'Yes'
+    numerator = df[df['Yes'] == 'Yes'].shape[0]
 
-    # Count the rows where 'Yes' is either ':selected:' or ':unselected:'
-    denominator = df[(df['Yes'] == ':selected:') | (df['Yes'] == ':unselected:')].shape[0]
+    # Count the rows where 'Yes' is either 'Yes' or 'No'
+    denominator = df[(df['Yes'] == 'Yes') | (df['Yes'] == 'No')].shape[0]
 
     # Create a pie chart using Plotly
     fig = px.pie(values=[numerator, denominator - numerator], names=['Selected', 'Unselected'], title='Your Statistics')

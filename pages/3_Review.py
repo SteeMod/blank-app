@@ -56,7 +56,12 @@ def download_blob_data(blob):
     try:
         blob_client = blob_service_client.get_blob_client(container_name, blob.name)
         stream = blob_client.download_blob().readall()
-        return pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='skip')
+        df = pd.read_csv(io.StringIO(stream.decode('utf-8', errors='ignore')), on_bad_lines='skip')
+        
+        # Modify the DataFrame to replace values
+        df = df.replace({':selected:': 'Yes', ':unselected:': 'No'})
+        df = df.fillna('')
+        return df
     except Exception as e:
         st.write(f"Error occurred: {e}")
         return None
@@ -133,7 +138,6 @@ with st.form("Review"):
                 'Route': [str(row_data.get(f"Day{i}Route", '')) for i in range(1, 32)]
             }
 
-            
             treatment_plan_df = pd.DataFrame(treatment_plan_data)
             edited_treatment_plan_df = st.data_editor(treatment_plan_df)
 
@@ -161,4 +165,3 @@ with st.form("Review"):
 
     else:
         st.write("No files found in the specified container.")
-
