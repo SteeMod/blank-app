@@ -36,3 +36,4 @@ col1.write(
 image = show_image()
 if image:
     col2.image(image, caption='Stephen Modimakwane', width=200)
+#praise ye the lord
